@@ -13,3 +13,6 @@ Capítulo de hero com `CipherField` (`src/components/cipher-field.tsx`): 16 mil 
 - Fallback: sem WebGL2 ou com falha de shader/contexto, fica só o brilho CSS; o conteúdo nunca depende do canvas.
 - Movimento reduzido: sem capítulo fixo (fluxo normal) e quadro estático. Pausa global por `html[data-motion="paused"]`, que também congela marquee, feixe do CTA e diagramas.
 - O símbolo em partículas é uma composição a partir do JPEG oficial, não um vetor nem uma reconstrução da marca.
+
+## Atualização — páginas internas
+O mesmo componente atende os heróis internos com a prop `shape` (forma fixa, sem capítulo de rolagem), em vez de um segundo componente. Abaixo de 850 px o canvas é ocultado e o loop não roda (`clientWidth` zero).

@@ -1,0 +1,163 @@
+
+> webcrypt@0.1.0 check
+> npm run typecheck && npm run lint && npm test && npm run build
+
+
+> webcrypt@0.1.0 typecheck
+> tsc --noEmit
+
+
+> webcrypt@0.1.0 lint
+> eslint .
+
+
+> webcrypt@0.1.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: contato exige diretório privado externo e configuração segura de produção
+ok 1 - contato exige diretório privado externo e configuração segura de produção
+  ---
+  duration_ms: 68.471704
+  type: 'test'
+  ...
+# (node:177297) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: contato não configurado nunca simula recebimento
+ok 2 - contato não configurado nunca simula recebimento
+  ---
+  duration_ms: 234.315375
+  type: 'test'
+  ...
+# Subtest: confirma somente após persistir e reenvio não duplica
+ok 3 - confirma somente após persistir e reenvio não duplica
+  ---
+  duration_ms: 117.826365
+  type: 'test'
+  ...
+# Subtest: validação rejeita campos inesperados, serviços inválidos e spam
+ok 4 - validação rejeita campos inesperados, serviços inválidos e spam
+  ---
+  duration_ms: 115.960274
+  type: 'test'
+  ...
+# Subtest: contato patológico é recusado sem backtracking custoso
+ok 5 - contato patológico é recusado sem backtracking custoso
+  ---
+  duration_ms: 60.182221
+  type: 'test'
+  ...
+# Subtest: origem indevida, formato e payload excessivo são recusados
+ok 6 - origem indevida, formato e payload excessivo são recusados
+  ---
+  duration_ms: 5.603466
+  type: 'test'
+  ...
+# Subtest: limite persistente retorna 429 inclusive após nova conexão
+ok 7 - limite persistente retorna 429 inclusive após nova conexão
+  ---
+  duration_ms: 217.5823
+  type: 'test'
+  ...
+# Subtest: SQL e HTML são armazenados como texto e conteúdo cifrado adulterado é recusado
+ok 8 - SQL e HTML são armazenados como texto e conteúdo cifrado adulterado é recusado
+  ---
+  duration_ms: 71.572548
+  type: 'test'
+  ...
+# Subtest: falha de notificação preserva solicitação e retry envia somente o identificador
+ok 9 - falha de notificação preserva solicitação e retry envia somente o identificador
+  ---
+  duration_ms: 54.552481
+  type: 'test'
+  ...
+# Subtest: falha de armazenamento não confirma envio; exclusão remove acesso ao conteúdo
+ok 10 - falha de armazenamento não confirma envio; exclusão remove acesso ao conteúdo
+  ---
+  duration_ms: 54.652358
+  type: 'test'
+  ...
+# Subtest: erro HTTP do provedor libera a resposta e mantém a notificação pendente
+ok 11 - erro HTTP do provedor libera a resposta e mantém a notificação pendente
+  ---
+  duration_ms: 49.015874
+  type: 'test'
+  ...
+# Subtest: recibo de envio já persistido pode ser recuperado após atingir limite
+ok 12 - recibo de envio já persistido pode ser recuperado após atingir limite
+  ---
+  duration_ms: 254.665881
+  type: 'test'
+  ...
+# Subtest: contato expirado não é lido nem notificado antes da limpeza agendada
+ok 13 - contato expirado não é lido nem notificado antes da limpeza agendada
+  ---
+  duration_ms: 88.175827
+  type: 'test'
+  ...
+# Subtest: site URL follows explicit configuration, Vercel preview, then localhost
+ok 14 - site URL follows explicit configuration, Vercel preview, then localhost
+  ---
+  duration_ms: 1589.781257
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2021.648885
+
+> webcrypt@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 249ms
+- Experiments (use with caution):
+  · cpus: 2
+  ⨯ useTypeScriptCli
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 26.6s
+  Running TypeScript ...
+  Finished TypeScript in 25.1s ...
+  Collecting page data using 2 workers ...
+(node:179942) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 2 workers (0/15) ...
+  Generating static pages using 2 workers (3/15) 
+  Generating static pages using 2 workers (7/15) 
+  Generating static pages using 2 workers (11/15) 
+✓ Generating static pages using 2 workers (15/15) in 5.1s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/contato
+├ ƒ /blog
+├ ƒ /blog/[slug]
+├ ƒ /contato
+├ ○ /icon.svg
+├ ○ /opengraph-image
+├ ƒ /privacidade
+├ ƒ /projetos
+├ ƒ /projetos/[slug]
+├ ○ /robots.txt
+├ ƒ /seguranca
+├ ○ /sitemap.xml
+├ ƒ /sobre
+└ ƒ /solucoes
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+exit 0

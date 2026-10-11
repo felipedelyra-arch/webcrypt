@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 // Scroll-driven particle chapter: scattered bits assemble into a data sphere,
 // split into three architecture layers, then resolve into the official symbol.
 const VERT = `#version 300 es
 in vec3 aSphere; in vec3 aLayers; in vec3 aSymbol; in vec3 aRandom; in vec2 aMeta;
-uniform float uTime, uMorph, uAssemble, uAspect, uPixel, uScale, uPress;
+uniform float uTime, uMorph, uAssemble, uAspect, uPixel, uScale, uPress, uBurst, uIntro;
 uniform vec2 uTilt, uMouse, uOffset;
 out vec3 vColor; out float vAlpha;
 mat3 rotX(float a){float c=cos(a),s=sin(a);return mat3(1,0,0,0,c,s,0,-s,c);}
@@ -19,8 +19,11 @@ void main(){
   p+=.018*(1.-m2*.7)*vec3(sin(uTime*1.3+seed*40.),cos(uTime*1.1+seed*33.),sin(uTime*.9+seed*21.));
   float a=clamp(uAssemble*1.5-seed*.5,0.,1.);a=1.-pow(1.-a,4.);
   p=mix(aRandom,p,a);
+  p*=1.+uBurst*(.35+seed*1.8);
   float scanY=sin(uTime*.45)*1.15;
   float scan=exp(-pow((p.y-scanY)*9.,2.))*(1.-m2);
+  // Intro: a light sweep climbs the symbol (progressive illumination).
+  scan+=uIntro*exp(-pow((p.y-(uTime*1.5-1.7))*4.,2.))*1.4;
   float ry=mix(sin(uTime*.16)*.85+uTime*.05,0.,m2)+uTilt.x*.35;
   float rx=mix(mix(.22,.6,m1),0.,m2)-uTilt.y*.22;
   p=rotX(rx)*rotY(ry)*p;
@@ -84,22 +87,33 @@ async function sampleSymbol(n: number, meta: Float32Array) {
   return out;
 }
 
-export function CipherField() {
+const WIDE = '(min-width: 851px)';
+const readPaused = () => { try { return sessionStorage.getItem('webcrypt-motion') === 'paused'; } catch { return false; } };
+const onMotion = (cb: () => void) => { addEventListener('webcrypt:motion', cb); return () => removeEventListener('webcrypt:motion', cb); };
+const onWide = (cb: () => void) => { const mq = matchMedia(WIDE); mq.addEventListener('change', cb); return () => mq.removeEventListener('change', cb); };
+
+// Without `shape` it drives the home scroll chapter; with `shape` it is a fixed ambient scene for inner page heroes.
+export function CipherField({ shape }: { shape?: 0 | 1 | 2 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const [paused, setPaused] = useState(false);
+  // Pause choice lives in sessionStorage so it survives navigation between pages.
+  const paused = useSyncExternalStore(onMotion, readPaused, () => false);
+  const wide = useSyncExternalStore(onWide, () => matchMedia(WIDE).matches, () => true);
   const [failed, setFailed] = useState(false);
   const pausedRef = useRef(false);
+  const setPaused = (next: boolean) => { try { sessionStorage.setItem('webcrypt-motion', next ? 'paused' : 'running'); } catch {} window.dispatchEvent(new Event('webcrypt:motion')); };
 
   useEffect(() => {
     pausedRef.current = paused;
     document.documentElement.dataset.motion = paused ? 'paused' : 'running';
-    window.dispatchEvent(new Event('webcrypt:motion'));
+    window.dispatchEvent(new Event('webcrypt:motion-sync'));
   }, [paused]);
   useEffect(() => () => { delete document.documentElement.dataset.motion; }, []);
 
   useEffect(() => {
     const el = canvas.current;
-    const story = el?.closest<HTMLElement>('.hero-story');
+    const ambient = shape !== undefined;
+    if (ambient && !matchMedia(WIDE).matches) return; // hydration snapshot says wide; read the real value
+    const story = el?.closest<HTMLElement>(ambient ? '.page-hero' : '.hero-story');
     const gl = el?.getContext('webgl2', { antialias: false, alpha: true, premultipliedAlpha: true, powerPreference: 'high-performance' });
     if (!el || !story || !gl) { setFailed(true); return; }
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -125,7 +139,7 @@ export function CipherField() {
     };
     attr('aSphere', s.sphere, 3); attr('aLayers', s.layers, 3); attr('aRandom', s.random, 3);
     const symbolBuffer = attr('aSymbol', s.layers, 3), metaBuffer = attr('aMeta', s.meta, 2);
-    const u = Object.fromEntries(['uTime', 'uMorph', 'uAssemble', 'uAspect', 'uPixel', 'uScale', 'uPress', 'uTilt', 'uMouse', 'uOffset'].map(k => [k, gl.getUniformLocation(prog, k)]));
+    const u = Object.fromEntries(['uTime', 'uMorph', 'uAssemble', 'uAspect', 'uPixel', 'uScale', 'uPress', 'uBurst', 'uIntro', 'uTilt', 'uMouse', 'uOffset'].map(k => [k, gl.getUniformLocation(prog, k)]));
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
 
     let alive = true;
@@ -138,22 +152,27 @@ export function CipherField() {
 
     let frame = 0, last = 0, time = 0, assemble = reduced.matches ? 1 : 0, visible = true, morph = 0, morphTarget = 0;
     const tilt = [0, 0], tiltTarget = [0, 0], mouse = [9, 9];
-    let press = 0, pressTarget = 0, dpr = 1;
-    const introOpen = () => !document.getElementById('webcrypt-intro')?.hidden;
+    let press = 0, pressTarget = 0, dpr = 1, burst = 0;
+    const introOpen = () => document.getElementById('webcrypt-intro')?.hidden === false;
+    // Home intro: the scene starts centred on the symbol and travels to the hero position afterwards.
+    let introMix = introOpen() ? 1 : 0;
+    const base = { x: 0, y: 0, scale: .5 }, center = { x: 0, y: 0, scale: .6 };
 
     const resize = () => {
-      dpr = Math.min(devicePixelRatio || 1, 2);
+      dpr = Math.min(devicePixelRatio || 1, 1.5);
       const w = el.clientWidth, h = el.clientHeight;
       el.width = Math.round(w * dpr); el.height = Math.round(h * dpr);
       gl.viewport(0, 0, el.width, el.height);
       const aspect = w / h, wide = aspect > 1.05;
       gl.uniform1f(u.uAspect, aspect);
       gl.uniform1f(u.uPixel, (wide ? 1.7 : 1.5) * dpr);
-      gl.uniform1f(u.uScale, wide ? .5 : Math.min(.42, aspect * .62));
-      gl.uniform2f(u.uOffset, wide ? .42 : 0, wide ? -.02 : .4);
+      base.scale = ambient ? .42 : wide ? .5 : Math.min(.42, aspect * .62);
+      base.x = ambient ? .58 : wide ? .42 : 0; base.y = ambient ? 0 : wide ? -.02 : .4;
+      center.y = wide ? .15 : .2; center.scale = wide ? .62 : Math.min(.56, aspect * .85);
       draw();
     };
     const readScroll = () => {
+      if (ambient) { morphTarget = shape; return; }
       const r = story.getBoundingClientRect(), span = r.height - innerHeight;
       const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
       story.style.setProperty('--story', p.toFixed(4));
@@ -164,15 +183,22 @@ export function CipherField() {
       gl!.clearColor(0, 0, 0, 0); gl!.clear(gl!.COLOR_BUFFER_BIT);
       gl!.uniform1f(u.uTime, time); gl!.uniform1f(u.uMorph, Math.min(2, morph)); gl!.uniform1f(u.uAssemble, assemble);
       gl!.uniform2f(u.uTilt, tilt[0], tilt[1]); gl!.uniform2f(u.uMouse, mouse[0], mouse[1]); gl!.uniform1f(u.uPress, press);
+      const e = introMix * introMix * (3 - 2 * introMix);
+      gl!.uniform2f(u.uOffset, base.x + (center.x - base.x) * e, base.y + (center.y - base.y) * e);
+      gl!.uniform1f(u.uScale, base.scale + (center.scale - base.scale) * e);
+      gl!.uniform1f(u.uBurst, burst); gl!.uniform1f(u.uIntro, introOpen() ? 1 : 0);
       gl!.drawArrays(gl!.POINTS, 0, n);
     }
-    const running = () => alive && visible && !document.hidden && !pausedRef.current && !reduced.matches;
+    const running = () => alive && visible && el.clientWidth > 0 && !document.hidden && !pausedRef.current && !reduced.matches;
     const tick = (now: number) => {
       frame = 0;
       const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
-      if (!introOpen()) { time += dt; assemble = Math.min(1, assemble + dt / 2.2); }
+      const intro = introOpen();
+      time += dt; assemble = Math.min(1, assemble + dt / (intro ? 1.3 : 2.2));
       const k = 1 - Math.exp(-dt * 6);
-      morph += (morphTarget - morph) * k;
+      morph += ((intro ? 2 : morphTarget) - morph) * k;
+      introMix += ((intro ? 1 : 0) - introMix) * (1 - Math.exp(-dt * 3.2));
+      burst *= Math.exp(-dt * 3.4);
       tilt[0] += (tiltTarget[0] - tilt[0]) * k; tilt[1] += (tiltTarget[1] - tilt[1]) * k;
       press += (pressTarget - press) * k;
       draw();
@@ -198,15 +224,18 @@ export function CipherField() {
 
     const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) readScroll(); sync(); });
     io.observe(story);
-    const ro = new ResizeObserver(resize);
+    const ro = new ResizeObserver(() => { resize(); start(); });
     ro.observe(el);
-    resize(); readScroll(); morph = morphTarget;
+    resize(); readScroll(); morph = introMix ? 2 : morphTarget;
     addEventListener('scroll', onScroll, { passive: true });
     story.addEventListener('pointermove', onPointer);
     story.addEventListener('pointerleave', onLeave);
     document.addEventListener('visibilitychange', sync);
     reduced.addEventListener('change', sync);
-    addEventListener('webcrypt:motion', sync);
+    addEventListener('webcrypt:motion-sync', sync);
+    const introStart = () => { assemble = 0; time = 0; introMix = 1; morph = 2; burst = 0; start(); };
+    const introEnd = () => { burst = 1; readScroll(); start(); };
+    if (!ambient) { addEventListener('webcrypt:intro-start', introStart); addEventListener('webcrypt:intro-end', introEnd); }
     el.addEventListener('webglcontextlost', lost);
     sync();
     return () => {
@@ -216,11 +245,12 @@ export function CipherField() {
       story.removeEventListener('pointerleave', onLeave);
       document.removeEventListener('visibilitychange', sync);
       reduced.removeEventListener('change', sync);
-      removeEventListener('webcrypt:motion', sync);
+      removeEventListener('webcrypt:motion-sync', sync);
+      removeEventListener('webcrypt:intro-start', introStart); removeEventListener('webcrypt:intro-end', introEnd);
       el.removeEventListener('webglcontextlost', lost);
       buffers.forEach(b => gl.deleteBuffer(b)); gl.deleteVertexArray(vao); gl.deleteProgram(prog);
     };
-  }, []);
+  }, [shape, wide]);
 
   return <>
     <div className={`cipher-field${failed ? ' is-fallback' : ''}`} aria-hidden="true">
@@ -228,8 +258,8 @@ export function CipherField() {
       <canvas ref={canvas} />
     </div>
     <div className="art-footer">
-      <button type="button" className="intro-replay" aria-controls="webcrypt-intro" onClick={() => window.dispatchEvent(new Event('webcrypt:replay-intro'))}>Ver abertura</button>
-      <button type="button" className="motion-toggle" onClick={() => setPaused(value => !value)} aria-pressed={paused}>
+      {shape === undefined && <button type="button" className="intro-replay" aria-controls="webcrypt-intro" onClick={() => window.dispatchEvent(new Event('webcrypt:replay-intro'))}>Ver abertura</button>}
+      <button type="button" className="motion-toggle" onClick={() => setPaused(!paused)} aria-pressed={paused}>
         <span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span> {paused ? 'Retomar' : 'Pausar'} efeitos
       </button>
     </div>

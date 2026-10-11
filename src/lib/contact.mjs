@@ -59,7 +59,7 @@ function validate(data) {
     if (value.length > max || values[key].length < min || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/u.test(value)) fields[key] = `Use entre ${min} e ${max} caracteres.`;
   }
   const contact = values.contact || '';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) && !(/^\+?[\d\s().-]+$/.test(contact) && (contact.match(/\d/g)?.length || 0) >= 5)) fields.contact = 'Informe um e-mail ou telefone válido.';
+  if (!fields.contact && !/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(contact) && !(/^\+?[\d\s().-]+$/.test(contact) && (contact.match(/\d/g)?.length || 0) >= 5)) fields.contact = 'Informe um e-mail ou telefone válido.';
   if (!['apps','plataformas','integracoes','seguranca','a-definir'].includes(values.service)) fields.service = 'Selecione uma solução.';
   return { fields, values };
 }

@@ -21,7 +21,7 @@ function validate(values: Values): FieldErrors {
   const errors: FieldErrors = {};
   if (values.name.trim().length < 2 || values.name.length > 100) errors.name = 'Informe um nome entre 2 e 100 caracteres.';
   const contact = values.contact.trim();
-  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+  const email = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(contact);
   const phone = /^\+?[\d\s().-]+$/.test(contact) && (contact.match(/\d/g)?.length ?? 0) >= 5;
   if (contact.length < 5 || contact.length > 180 || (!email && !phone)) errors.contact = 'Informe um e-mail ou telefone válido, com até 180 caracteres.';
   if (values.company.length > 120) errors.company = 'Use até 120 caracteres.';

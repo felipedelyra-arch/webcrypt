@@ -1,0 +1,40 @@
+{
+ "1440x900": {
+  "reduceMatches": true,
+  "introDisplay": "none",
+  "chapter": false,
+  "heroPosition": "relative",
+  "headline": "Software que faz seu negócio avançar.",
+  "headlineStable": true,
+  "copyOpacity": "1",
+  "marquee": "none",
+  "beam": "none",
+  "flowPacket": "none",
+  "pauseVisible": "none",
+  "fallback": false,
+  "canvasSize": [
+   1425,
+   900
+  ],
+  "docW": 1425
+ },
+ "390x844": {
+  "reduceMatches": true,
+  "introDisplay": "none",
+  "chapter": false,
+  "heroPosition": "relative",
+  "headline": "Software que faz seu negócio avançar.",
+  "headlineStable": true,
+  "copyOpacity": "1",
+  "marquee": "none",
+  "beam": "none",
+  "flowPacket": "none",
+  "pauseVisible": "none",
+  "fallback": false,
+  "canvasSize": [
+   390,
+   911
+  ],
+  "docW": 390
+ }
+}

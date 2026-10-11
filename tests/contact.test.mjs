@@ -41,6 +41,16 @@ test('validação rejeita campos inesperados, serviços inválidos e spam', asyn
   }
   assert.deepEqual(maintainContacts(config).pending, []);
 });
+test('contato patológico é recusado sem backtracking custoso', async t => {
+  const config = fixture(t);
+  // 20k chars: the old regex took seconds here (quadratic); still under the 24 KiB body limit.
+  for (const contact of ['a@' + '.'.repeat(170) + '@', 'a@' + '.'.repeat(20000) + '@']) {
+    const started = performance.now();
+    assert.ok([413, 422].includes((await handleContact(request({ ...valid, contact }), config)).status));
+    assert.ok(performance.now() - started < 100);
+  }
+});
+
 test('origem indevida, formato e payload excessivo são recusados', async t => {
   const config = fixture(t);
   assert.equal((await handleContact(request(valid, randomUUID(), 'https://evil.example'), config)).status, 403);

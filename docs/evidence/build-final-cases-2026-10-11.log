@@ -1,0 +1,51 @@
+
+> webcrypt@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 260ms
+- Experiments (use with caution):
+  · cpus: 2
+  ⨯ useTypeScriptCli
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.6s
+  Running TypeScript ...
+  Finished TypeScript in 20.3s ...
+  Collecting page data using 2 workers ...
+(node:192966) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 2 workers (0/15) ...
+  Generating static pages using 2 workers (3/15) 
+  Generating static pages using 2 workers (7/15) 
+  Generating static pages using 2 workers (11/15) 
+✓ Generating static pages using 2 workers (15/15) in 2.6s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/contato
+├ ƒ /blog
+├ ƒ /blog/[slug]
+├ ƒ /contato
+├ ○ /icon.svg
+├ ○ /opengraph-image
+├ ƒ /privacidade
+├ ƒ /projetos
+├ ƒ /projetos/[slug]
+├ ○ /robots.txt
+├ ƒ /seguranca
+├ ○ /sitemap.xml
+├ ƒ /sobre
+└ ƒ /solucoes
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit 0

@@ -17,6 +17,9 @@
 .hero h1 { font-size: clamp(56px, 5vw, 92px); line-height: 1.04; letter-spacing: -.065em; font-weight: 400; text-wrap: initial; }
 .hero h1:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
 .hero-line { display: block; white-space: nowrap; }
+.decrypt { position: relative; }
+.decrypt.is-ciphering { color: transparent; }
+.decrypt.is-ciphering::after { content: attr(data-cipher); position: absolute; left: 0; top: 0; color: var(--text); white-space: pre; }
 .hero-promise { color: var(--accent); font-size: clamp(18px, 1.3vw, 23px); letter-spacing: -.035em; margin-top: 28px; }
 .hero-description { max-width: 460px; margin-top: 18px; font-size: 15px; line-height: 1.8; }
 .hero-actions { display: flex; align-items: center; gap: 14px 26px; flex-wrap: wrap; margin-top: 34px; }
@@ -51,7 +54,7 @@
   .story-progress i { position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: var(--accent); transform-origin: top; transform: scaleY(var(--story)); box-shadow: 0 0 10px var(--accent); }
   .story-progress span { writing-mode: vertical-rl; rotate: 180deg; }
   .hero-copy { animation: hero-enter 1100ms var(--ease-out) both; }
-  @keyframes hero-enter { from { opacity: 0; filter: blur(10px); transform: translateY(24px); } }
+  @keyframes hero-enter { from { filter: blur(10px); transform: translateY(24px); } }
   .hero-kicker .green-dot { animation: dot-pulse 2.4s ease-in-out infinite; }
   @keyframes dot-pulse { 50% { box-shadow: 0 0 0 6px #b5f52b00, 0 0 18px #b5f52b; } }
   html[data-motion="paused"] .hero-kicker .green-dot { animation-play-state: paused; }
@@ -62,25 +65,24 @@
 
 /* Hidden in server HTML; CSS also releases the page if a later script fails. */
 .intro[hidden] { display: none; }
-.intro { position: fixed; inset: 0; z-index: 90; background: var(--bg); pointer-events: none; animation: intro-exit 600ms 2s forwards; overflow: hidden; }
-.intro-skip { position: absolute; right: 32px; top: 28px; border: 1px solid #52653c; border-radius: 30px; background: #10170c; padding: 12px 20px; min-height: 44px; font-size: 12px; pointer-events: auto; z-index: 2; }
+/* Transparent overlay: the hero canvas underneath draws the symbol. CSS also releases the page if a script fails. */
+.intro { position: fixed; inset: 0; z-index: 90; pointer-events: none; overflow: hidden; background: radial-gradient(60% 55% at 50% 44%, transparent 40%, #080a08aa 100%); animation: intro-exit 700ms 2.3s forwards; }
+.intro-skip { position: absolute; right: 32px; top: 28px; border: 1px solid #52653c; border-radius: 30px; background: #10170ccc; backdrop-filter: blur(8px); padding: 12px 20px; min-height: 44px; font-size: 12px; pointer-events: auto; z-index: 2; }
 .intro-skip span { margin-left: 14px; color: var(--accent); }
-.intro-grid { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 49.95%, #b5f52b1a 50%, transparent 50.05%), linear-gradient(0deg, transparent 49.95%, #b5f52b16 50%, transparent 50.05%), repeating-linear-gradient(0deg, transparent 0 79px, #b5f52b07 80px), repeating-linear-gradient(90deg, transparent 0 79px, #b5f52b07 80px); mask-image: radial-gradient(ellipse, #000, transparent 72%); animation: grid-arrive 1.4s var(--ease-out) both; }
-.intro-orbit { position: absolute; width: min(65vw, 540px); aspect-ratio: 1; left: 50%; top: 50%; transform: translate(-50%, -57%); stroke: var(--accent); stroke-width: .8; opacity: .35; animation: orbit-arrive 1800ms var(--ease-out) both, word-exit 350ms 1950ms forwards; }
-.intro-orbit ellipse, .intro-orbit circle { stroke-dasharray: 100; animation: orbit-draw 1600ms var(--ease-out) both; }
-.intro-orbit ellipse { animation-delay: 150ms; }
-.intro-orbit ellipse + ellipse { animation-delay: 300ms; }
-@keyframes orbit-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-@keyframes orbit-arrive { from { opacity: 0; transform: translate(-50%, -57%) scale(.8) rotate(-15deg); } to { opacity: .35; transform: translate(-50%, -57%) scale(1) rotate(0); } }
-.intro-symbol { width: 290px; aspect-ratio: 1; position: absolute; left: calc(50% - 145px); top: calc(50% - 205px); mix-blend-mode: screen; animation: symbol-merge 600ms 2s var(--ease-out) forwards; }
-.intro-symbol .brand-symbol { width: 100%; mask-image: radial-gradient(ellipse, #000 46%, transparent 72%); animation: symbol-light 1100ms 160ms var(--ease-out) both; }
-.intro-word { position: absolute; left: 50%; top: calc(50% + 68px); transform: translateX(-50%); font: 400 clamp(36px, 5vw, 55px)/1.15 var(--font-sora), sans-serif; letter-spacing: -.06em; color: var(--text); white-space: nowrap; animation: word-exit 350ms 1950ms forwards; }
-.intro-caption { position: absolute; top: calc(50% + 145px); width: 100%; text-align: center; font-size: 11px; letter-spacing: .12em; color: var(--muted); animation: word-exit 350ms 1950ms forwards; }
-@keyframes symbol-light { from { opacity: 0; clip-path: inset(0 0 100%); } 50% { opacity: 1; } to { opacity: 1; clip-path: inset(0); } }
-@keyframes symbol-merge { to { transform: translate(var(--intro-x, 0px), var(--intro-y, -16px)) scale(var(--intro-scale, 1)); } }
-@keyframes word-exit { to { opacity: 0; } }
-@keyframes grid-arrive { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
+.intro-word-block { position: absolute; left: 50%; top: 75%; translate: -50% 0; display: grid; justify-items: center; gap: 10px; animation: word-exit 400ms 2.05s forwards; }
+.intro-word { font: 400 clamp(38px, 4.6vw, 62px)/1.1 var(--font-sora), sans-serif; letter-spacing: -.06em; color: var(--text); white-space: pre; text-shadow: 0 0 28px #b5f52b44; }
+.intro-caption { font-size: 11px; letter-spacing: .32em; color: var(--muted); padding-left: .32em; }
+.intro-progress { display: block; width: 180px; height: 1px; margin-top: 14px; background: var(--line); overflow: hidden; }
+.intro-progress::after { content: ''; display: block; height: 100%; background: var(--accent); box-shadow: 0 0 10px var(--accent); transform-origin: left; animation: intro-progress 2.6s linear both; }
+@keyframes intro-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes word-exit { to { opacity: 0; filter: blur(8px); transform: scale(1.04); } }
 @keyframes intro-exit { to { opacity: 0; visibility: hidden; } }
+/* Page content waits in a fog while the intro plays, then rises in sequence. */
+.site-header, .hero-inner, .hero-bottom, .art-footer { transition: opacity 900ms var(--ease-out), filter 900ms var(--ease-out), translate 900ms var(--ease-out); }
+.hero-inner { transition-delay: 200ms; }
+.hero-bottom, .art-footer { transition-delay: 380ms; }
+.intro-playing .site-header, .intro-playing .hero-inner, .intro-playing .hero-bottom, .intro-playing .art-footer { opacity: .04; filter: blur(8px); translate: 0 14px; transition-duration: 0s; transition-delay: 0s; animation: fog-release 1ms 3.4s forwards; }
+@keyframes fog-release { to { opacity: 1; filter: none; translate: none; } }
 
 .home .section-heading h2 { max-width: 760px; }
 .home .section-heading > p { max-width: 310px; }
@@ -126,10 +128,8 @@
   .hero-bottom { font-size: 10px; }
   .story-caption span { font-size: 32px; }
   .intro-skip { right: 20px; top: 20px; }
-  .intro-symbol { width: 260px; left: calc(50% - 130px); top: calc(50% - 185px); }
-  .intro-orbit { width: min(110vw, 440px); }
-  .intro-word { top: calc(50% + 65px); }
-  .intro-caption { font-size: 10px; top: calc(50% + 127px); }
+  .intro-word-block { top: 64%; }
+  .intro-caption { font-size: 10px; letter-spacing: .24em; }
 }
 @media (max-width: 600px) and (prefers-reduced-motion: no-preference) {
   .hero-story .hero { height: 100svh; min-height: 0; }
@@ -151,7 +151,7 @@
       animation-timeline: view();
       animation-range: entry 0% entry 65%;
     }
-    @keyframes section-enter { from { opacity: .2; filter: blur(6px); transform: translateY(40px); } to { opacity: 1; filter: none; transform: translateY(0); } }
+    @keyframes section-enter { from { filter: blur(6px); transform: translateY(40px); } to { filter: none; transform: translateY(0); } }
   }
 }
 @media (max-width: 600px) and (max-height: 700px) {

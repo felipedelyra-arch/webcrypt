@@ -44,3 +44,13 @@ Capturas de navegador e resultados de validação devem ser consultados nas evid
 ## Substituição do hero — 11/10/2026
 
 O símbolo JPEG deixou o hero e a marca d'água de segurança. A abertura mantém o símbolo oficial; cabeçalho/rodapé preservam a logo horizontal. Novo recurso: SVG inline original com três planos isométricos de software, preenchimentos e traços próprios; recurso vetorial decorativo sem tela de cliente, contadores ou promessa de proteção. Capas dos projetos são composições tipográficas identificadas como apresentações em preparação.
+
+## Capturas reais dos projetos — 11/10/2026
+
+| Projeto | Origem | Arquivos | Resolução |
+| --- | --- | --- | --- |
+| Mercadog | https://www.mercadog.com.br, captura em Brave headless (CDP) com rolagem até cada seção | `public/projects/mercadog/{home,servicos,banho-tosa,loja}.webp`, `mobile.webp` | Desktop 1440×900 a 2× → 2400×1500; celular 390×844 a 3× → 1170×2532 |
+| Tio Panda | https://www.tiopanda.com.br, mesmo método; pop-up promocional fechado antes de cada captura | `public/projects/tio-panda/{home,rodizio,cardapio,pandavip}.webp`, `mobile.webp` | Idem |
+| PandaVip | Código atual `~/Downloads/clubepanda-master/app` (versão 1.0.0+10, design v2), compilado com `flutter build web --dart-define=DEMO=true` numa pasta temporária, sem alterar o `build/web` do projeto; navegação pelo modo demo oficial no Chrome | `public/projects/pandavip/*.webp` (7 telas) | 390×844 a 3× → 1170×2532 |
+
+Todas convertidas para WebP q82 com sharp, sem ampliação. As telas do PandaVip usam os dados fictícios do modo demo (conta de teste, valores e nome), identificados na página do case. As capturas antigas em `~/Área de trabalho/PandaVIP-screenshots` (build 4, 04/10) não foram usadas por estarem desatualizadas. Nenhum arquivo sensível do projeto (keystore, configs Firebase, senhas) foi lido ou copiado.

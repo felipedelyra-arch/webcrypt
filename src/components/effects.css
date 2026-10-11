@@ -35,3 +35,13 @@ html[data-motion="paused"] .cap-track { animation-play-state: paused; }
 html[data-motion="paused"] .cta-beam { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .cta-beam { animation: none; background: linear-gradient(#30392c55, #30392c55); } }
 html:not([data-motion]) .cta-beam { animation-duration: 4.8s; animation-iteration-count: 1; }
+/* Inner page heroes: ambient particle scene on the right, hidden on narrow screens. */
+.page-hero { position: relative; isolation: isolate; }
+.page-hero .cipher-field { inset: 0 calc(50% - 50vw); }
+.page-hero .cipher-field::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 30%, #080a08b3 50%, transparent 72%), linear-gradient(0deg, var(--bg), transparent 30%); }
+.page-hero .cipher-glow { background: radial-gradient(28% 60% at 79% 50%, #b5f52b12, transparent 70%); }
+.page-hero .art-footer { right: 0; bottom: 18px; }
+@media (max-width: 850px) { .page-hero .cipher-field { display: none; } .page-hero .art-footer { position: static; justify-content: flex-start; margin-top: 28px; } }
+main:has(> .page-hero) { overflow-x: clip; }
+html.lenis { scroll-behavior: auto; }
+.no-ring:focus, .no-ring:focus-visible { outline: none; }
