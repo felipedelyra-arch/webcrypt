@@ -1,0 +1,188 @@
+:root { --ease-out: cubic-bezier(.22,1,.36,1); }
+.shell { width: min(1480px, calc(100% - 112px)); }
+.hero { position: relative; min-height: 790px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: center; padding: 72px 0 126px; isolation: isolate; }
+.hero-copy { position: relative; z-index: 2; min-width: 0; }
+.hero-kicker { display: flex; align-items: center; gap: 12px; font-size: 12px; color: #bfc8b8; margin-bottom: 30px; }
+.hero h1 { font-size: clamp(56px, 4.55vw, 84px); line-height: 1.08; letter-spacing: -.065em; font-weight: 400; text-wrap: initial; }
+.hero h1:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
+.hero-promise { color: var(--accent); font-size: clamp(18px, 1.3vw, 23px); letter-spacing: -.035em; margin-top: 28px; }
+.hero-description { max-width: 460px; margin-top: 20px; font-size: 14px; line-height: 1.85; }
+.hero-actions { display: flex; align-items: center; gap: 14px 26px; flex-wrap: wrap; margin-top: 32px; }
+.hero-actions > .button { font-size: 13px; padding: 17px 20px; gap: 18px; }
+.hero-actions > .text-link { font-size: 12px; gap: 12px; }
+.hero-bottom { position: absolute; bottom: 24px; left: 0; right: 0; display: flex; align-items: center; gap: 24px; border-top: 1px solid var(--line); padding-top: 22px; font-size: 11px; color: var(--muted); }
+.hero-bottom > a:first-of-type { display: inline-flex; width: auto; border: 0; font-size: 11px; margin-left: auto; }
+.hero-bottom a { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; font-size: 20px; color: var(--text); }
+.hero-bottom a:hover { border-color: var(--accent); color: var(--accent); }
+.circuit-art { position: relative; width: 100%; max-width: 660px; height: auto; aspect-ratio: 1; margin: 0; isolation: isolate; min-width: 0; justify-self: end; perspective: 1000px; }
+.circuit-structure { position: absolute; inset: 0; transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translate(var(--pointer-x, 0px), var(--pointer-y, 0px)); transition: transform 350ms var(--ease-out); }
+/* Software layers replace the oversized brand mark. */
+.architecture-scene { width: 100%; height: 100%; overflow: visible; }
+.architecture-halo { position: absolute; inset: 10% 0 0; background: radial-gradient(ellipse, #96c84612, transparent 64%); pointer-events: none; }
+.assembly-plane, .assembly-boundary { transform-box: fill-box; transform-origin: center; }
+.architecture-layer { transform-box: fill-box; transform-origin: center; animation: architecture-float 9s ease-in-out infinite alternate; animation-play-state: paused; }
+.layer-system { animation-delay: -3s; }
+.layer-data { animation-delay: -6s; }
+.is-moving .architecture-layer, .is-moving .architecture-signal { animation-play-state: running; }
+.architecture-signal { stroke-dasharray: 8 92; animation: circuit-flow 9s linear infinite; animation-play-state: paused; }
+.assembly-boundary { opacity: 0; }
+.assembly-note { position: absolute; top: -3%; inset-inline: 8%; font-size: 12px; color: #c1cdb6; }
+.assembly-note span { display: block; }
+.assembly-note span + span { display: none; }
+.architecture-caption { position: absolute; bottom: 7%; inset-inline: 14%; display: flex; justify-content: space-between; color: #b5c5ab; font-size: 11px; }
+.architecture-caption span::before { content: ''; display: inline-block; width: 5px; height: 5px; margin-right: 9px; background: #a8dc68; border-radius: 50%; }
+@keyframes architecture-float { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
+.art-footer { position: absolute; bottom: -1%; inset-inline: 8%; display: flex; justify-content: end; align-items: center; gap: 16px; }
+.intro-replay { padding: 8px 0; min-height: 44px; font-size: 11px; background: none; border: 0; color: var(--muted); }
+.intro-replay:hover { color: var(--text); }
+.motion-toggle { font-size: 10px; background: #0d120b; border: 1px solid var(--line); border-radius: 30px; padding: 10px 13px; min-height: 44px; white-space: nowrap; }
+.motion-toggle > span { color: var(--accent); padding-right: 5px; }
+.motion-toggle:hover { border-color: var(--accent); }
+@keyframes circuit-flow { to { stroke-dashoffset: -100; } }
+
+/* Hidden in server HTML; CSS also releases the page if a later script fails. */
+.intro[hidden] { display: none; }
+.intro { position: fixed; inset: 0; z-index: 90; background: var(--bg); pointer-events: none; animation: intro-exit 600ms 2s forwards; overflow: hidden; }
+.intro-skip { position: absolute; right: 32px; top: 28px; border: 1px solid #52653c; border-radius: 30px; background: #10170c; padding: 12px 20px; min-height: 44px; font-size: 12px; pointer-events: auto; z-index: 2; }
+.intro-skip span { margin-left: 14px; color: var(--accent); }
+.intro-grid { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 49.95%, #b5f52b1a 50%, transparent 50.05%), linear-gradient(0deg, transparent 49.95%, #b5f52b16 50%, transparent 50.05%), repeating-linear-gradient(0deg, transparent 0 79px, #b5f52b07 80px), repeating-linear-gradient(90deg, transparent 0 79px, #b5f52b07 80px); mask-image: radial-gradient(ellipse, #000, transparent 72%); animation: grid-arrive 1.4s var(--ease-out) both; }
+.intro-orbit { position: absolute; width: min(65vw, 540px); aspect-ratio: 1; left: 50%; top: 50%; transform: translate(-50%, -57%); stroke: var(--accent); stroke-width: .8; opacity: .35; animation: orbit-arrive 1800ms var(--ease-out) both, word-exit 350ms 1950ms forwards; }
+.intro-orbit ellipse, .intro-orbit circle { stroke-dasharray: 100; animation: orbit-draw 1600ms var(--ease-out) both; }
+.intro-orbit ellipse { animation-delay: 150ms; }
+.intro-orbit ellipse + ellipse { animation-delay: 300ms; }
+@keyframes orbit-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes orbit-arrive { from { opacity: 0; transform: translate(-50%, -57%) scale(.8) rotate(-15deg); } to { opacity: .35; transform: translate(-50%, -57%) scale(1) rotate(0); } }
+.intro-symbol { width: 290px; aspect-ratio: 1; position: absolute; left: calc(50% - 145px); top: calc(50% - 205px); mix-blend-mode: screen; animation: symbol-merge 600ms 2s var(--ease-out) forwards; }
+.intro-symbol .brand-symbol { width: 100%; mask-image: radial-gradient(ellipse, #000 46%, transparent 72%); animation: symbol-light 1100ms 160ms var(--ease-out) both; }
+.intro-word { position: absolute; left: 50%; top: calc(50% + 68px); transform: translateX(-50%); font: 400 clamp(36px, 5vw, 55px)/1.15 var(--font-sora), sans-serif; letter-spacing: -.06em; color: var(--text); white-space: nowrap; animation: word-exit 350ms 1950ms forwards; }
+.intro-caption { position: absolute; top: calc(50% + 145px); width: 100%; text-align: center; font-size: 11px; letter-spacing: .12em; color: var(--muted); animation: word-exit 350ms 1950ms forwards; }
+@keyframes symbol-light { from { opacity: 0; clip-path: inset(0 0 100%); } 50% { opacity: 1; } to { opacity: 1; clip-path: inset(0); } }
+@keyframes symbol-merge { to { transform: translate(var(--intro-x, 0px), var(--intro-y, -16px)) scale(var(--intro-scale, 1)); } }
+@keyframes word-exit { to { opacity: 0; } }
+@keyframes grid-arrive { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
+@keyframes intro-exit { to { opacity: 0; visibility: hidden; } }
+
+.home .section-heading h2 { max-width: 760px; }
+.home .section-heading > p { max-width: 310px; }
+.home .capabilities { background: #0b0f0a; }
+.home .capabilities > .shell { padding-block: 25px; font-size: 13px; }
+.home .capabilities span:nth-child(even) { font-size: 15px; color: #75974a; }
+.home .security-section { background: #10150e; }
+
+
+
+@media (min-width: 1900px) {
+  .shell { width: min(1600px, calc(100% - 160px)); }
+  .hero { min-height: 890px; padding-block: 90px 140px; }
+  .hero h1 { font-size: 90px; }
+  .hero-description { font-size: 16px; max-width: 530px; }
+  .hero-actions > .button { font-size: 14px; }
+  .hero-actions > .text-link { font-size: 13px; }
+  .circuit-art { height: auto; }
+}
+@media (max-width: 1200px) {
+  .shell { width: calc(100% - 72px); }
+  .hero { min-height: 720px; padding-block: 66px 124px; gap: 20px; }
+  .hero h1 { font-size: clamp(51px, 5vw, 63px); }
+  .hero-promise { font-size: 18px; }
+  .hero-description { font-size: 13px; }
+  .circuit-art { height: auto; margin: 0; }
+  .art-footer { inset-inline: 5%; }
+}
+@media (max-width: 850px) {
+  .shell { width: calc(100% - 48px); }
+  .hero { min-height: 650px; padding-block: 52px 118px; grid-template-columns: 1.15fr 1fr; gap: 0; }
+  .hero h1 { font-size: clamp(42px, 5.65vw, 49px); }
+  .hero-kicker { font-size: 10px; gap: 8px; }
+  .hero-promise { font-size: 15px; }
+  .hero-description { font-size: 12px; }
+  .hero-bottom > a:first-of-type { display: none; }
+  .hero-bottom a { margin-left: auto; }
+  .circuit-art { width: 100%; height: auto; margin: 0; }
+  .art-footer { inset-inline: 0; bottom: -10%; justify-content: end; }
+}
+@media (max-width: 600px) {
+  .shell { width: calc(100% - 40px); }
+  .site-header .brand { width: clamp(175px, 54vw, 195px); }
+  .hero { display: flex; flex-direction: column; align-items: stretch; padding-top: 34px; padding-bottom: 95px; min-height: auto; overflow: visible; gap: 0; }
+  .hero h1 { font-size: clamp(39px, 10.9vw, 62px); letter-spacing: -.067em; line-height: 1.13; text-wrap: balance; }
+  .hero-kicker { font-size: 10px; margin-bottom: 23px; }
+  .hero-promise { font-size: clamp(14px, 3.88vw, 19px); margin-top: 22px; }
+  .hero-description { font-size: 13px; line-height: 1.8; max-width: 385px; margin-top: 17px; }
+  .hero-actions { flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 26px; }
+  .hero-actions > .button { font-size: 12px; padding: 16px 18px; gap: 17px; min-height: 54px; }
+  .hero-actions > .text-link { font-size: 12px; }
+  .circuit-art { width: min(100%, 410px); aspect-ratio: 1; height: auto; margin: 2px auto 30px; }
+  
+  .art-footer { inset-inline: 1%; bottom: -5%; }
+  .motion-toggle { font-size: 9px; padding: 8px 11px; }
+  .hero-bottom { font-size: 10px; bottom: 17px; padding-top: 17px; }
+  .intro-skip { right: 20px; top: 20px; }
+  .intro-symbol { width: 260px; left: calc(50% - 130px); top: calc(50% - 185px); }
+  .intro-orbit { width: min(110vw, 440px); }
+  .intro-word { top: calc(50% + 65px); }
+  .intro-caption { font-size: 10px; top: calc(50% + 127px); }
+  .home .capabilities > .shell { font-size: 11px; gap: 14px 12px; padding-block: 22px; }
+  .home .capabilities span:nth-child(odd)::before { margin-right: 8px; }
+
+
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none !important; }
+  .architecture-layer, .architecture-signal { animation: none; }
+  .circuit-structure { transform: none; transition: none; }
+  .motion-toggle, .intro-replay { display: none; }
+}
+
+/* Native scroll timelines leave the content visible in browsers without support. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .home .section-heading, .home .security-grid > div:first-child, .home .project-showcase-heading {
+      animation: section-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 65%;
+    }
+    @keyframes section-enter { from { opacity: .35; transform: translateY(36px); } to { opacity: 1; transform: translateY(0); } }
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy { animation: hero-enter 900ms var(--ease-out) both; }
+  .circuit-art { animation: hero-enter 1200ms 120ms var(--ease-out) both; }
+  @keyframes hero-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+/* A short assembly chapter follows native scrolling; small screens keep normal flow. */
+@supports (animation-timeline: view()) {
+  @media (min-width: 900px) and (min-height: 800px) and (prefers-reduced-motion: no-preference) {
+    .hero-story { --hero-height: clamp(760px, 100svh, 900px); height: calc(var(--hero-height) + 380px); view-timeline-name: --assembly; }
+    .hero-story .hero { position: sticky; top: 0; min-height: var(--hero-height); padding-block: 72px 126px; }
+    .hero-story .circuit-art { max-width: min(660px, calc(var(--hero-height) - 240px)); }
+    .assembly-interface { animation: assemble-interface linear both; }
+    .assembly-system { animation: assemble-system linear both; }
+    .assembly-data { animation: assemble-data linear both; }
+    .assembly-boundary { animation: assemble-boundary linear both; }
+    .assembly-note span:first-child { animation: assembly-note-out linear both; }
+    .assembly-note span + span { display: block; position: absolute; top: 0; animation: assembly-note-in linear both; }
+    .assembly-plane, .assembly-boundary, .assembly-note span { animation-timeline: --assembly; animation-range: contain 0% contain 100%; }
+    .is-paused .assembly-plane, .is-paused .assembly-boundary, .is-paused .assembly-note span { animation-play-state: paused; }
+    @keyframes assemble-interface { to { transform: translateY(36px); } }
+    @keyframes assemble-system { to { transform: translateY(-20px); } }
+    @keyframes assemble-data { to { transform: translateY(-76px); } }
+    @keyframes assemble-boundary { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes assembly-note-out { 0%, 35% { opacity: 1; } 60%, 100% { opacity: 0; } }
+    @keyframes assembly-note-in { 0%, 45% { opacity: 0; } 75%, 100% { opacity: 1; } }
+  }
+}
+
+.hero-line { display: block; overflow: clip; }
+.hero-line > span { display: block; }
+@media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+  .hero-line > span { animation: headline-reveal 850ms var(--ease-out) both; }
+  .hero-line:nth-child(2) > span { animation-delay: 100ms; }
+  .hero-line:nth-child(3) > span { animation-delay: 200ms; }
+  @keyframes headline-reveal { from { transform: translateY(110%); } to { transform: translateY(0); } }
+}
+@media (max-width: 600px) {
+  .hero-line, .hero-line > span { display: inline; overflow: visible; }
+  .assembly-note { top: 2%; font-size: 11px; }
+}

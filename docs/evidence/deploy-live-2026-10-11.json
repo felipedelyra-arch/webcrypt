@@ -1,0 +1,119 @@
+{
+  "base": "https://webcrypt.vercel.app",
+  "checkedAt": "2026-10-11T06:54:35.397Z",
+  "checks": [
+    {
+      "path": "/_next/static/css/508171c1f6b9524b.css",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/css/a5bccfa80558c1d0.css",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/webpack-78c6280cd08831d7.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/4bd1b696-58970b7b91aecaf4.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/794-8d1bb58dd334d112.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/main-app-49e583a05f747a0c.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/500-037ff9cb7cfd06f9.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/437-ee452ec2f3e94d83.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/app/page-e88ba6a0e1c08115.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/app/layout-d64886d6389ce034.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/app/error-807de675b69d2f18.js",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200
+    },
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/solucoes",
+      "status": 200
+    },
+    {
+      "path": "/sobre",
+      "status": 200
+    },
+    {
+      "path": "/projetos",
+      "status": 200
+    },
+    {
+      "path": "/seguranca",
+      "status": 200
+    },
+    {
+      "path": "/blog",
+      "status": 200
+    },
+    {
+      "path": "/contato",
+      "status": 200
+    },
+    {
+      "path": "/privacidade",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "path": "/opengraph-image",
+      "status": 200
+    },
+    {
+      "path": "/brand/webcrypt-logo-original.jpg",
+      "status": 200
+    },
+    {
+      "path": "/brand/webcrypt-symbol-original.jpg",
+      "status": 200
+    },
+    {
+      "path": "/projetos/mercadog",
+      "status": 404
+    },
+    {
+      "path": "/projetos/tio-panda",
+      "status": 404
+    },
+    {
+      "path": "/api/contato",
+      "method": "POST",
+      "status": 503
+    }
+  ]
+}

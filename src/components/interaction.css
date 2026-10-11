@@ -1,0 +1,64 @@
+.services-layout .services-options > button,
+.process .process-steps button,
+.security-flow .flow-nodes button {
+  transition: color 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.services-layout .service-detail-content > .service-illustration {
+  animation: service-visual-in 320ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.services-layout .service-detail-content > :not(.service-illustration) {
+  animation: selection-copy-in 260ms ease-out both;
+}
+
+.process .process-description > p,
+.process .process-description > span,
+.security-flow #flow-description > span {
+  animation: selection-copy-in 260ms ease-out both;
+}
+
+.security-flow #flow-description > span { display: block; }
+
+.security-flow .flow-nodes { --flow-gap: 25px; }
+.security-flow .flow-nodes button { position: relative; }
+.security-flow .flow-nodes button[aria-pressed="true"]::before,
+.security-flow .flow-nodes button[aria-pressed="true"]::after {
+  content: '';
+  position: absolute;
+  top: 44px;
+  width: var(--flow-gap);
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px #b5f52b66;
+  pointer-events: none;
+}
+.security-flow .flow-nodes button[aria-pressed="true"]::before { right: 100%; }
+.security-flow .flow-nodes button[aria-pressed="true"]::after { left: 100%; }
+.security-flow .flow-nodes button:first-child::before,
+.security-flow .flow-nodes button:last-child::after { content: none; }
+
+@keyframes service-visual-in {
+  from { opacity: .72; translate: 0 7px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes selection-copy-in {
+  from { opacity: .75; translate: 0 4px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@media (max-width: 600px) {
+  .security-flow .flow-nodes { --flow-gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-layout .services-options > button,
+  .process .process-steps button,
+  .security-flow .flow-nodes button { transition: none; }
+  .services-layout .service-detail-content > .service-illustration,
+  .services-layout .service-detail-content > :not(.service-illustration),
+  .process .process-description > p,
+  .process .process-description > span,
+  .security-flow #flow-description > span { animation: none; }
+}

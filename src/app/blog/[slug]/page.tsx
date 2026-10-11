@@ -1,0 +1,8 @@
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { articles } from '@/content/articles';
+import { showDrafts, pageMeta } from '@/lib/site';
+type Props={params:Promise<{slug:string}>};
+function find(slug:string){return articles.find(a=>a.slug===slug&&(a.status==='published'||showDrafts));}
+export async function generateMetadata({params}:Props){const a=find((await params).slug);if(!a)return {};return {...pageMeta(a.title,a.description,`/blog/${a.slug}`),...(a.status==='draft'?{robots:{index:false,follow:false}}:{})};}
+export default async function ArticlePage({params}:Props){const a=find((await params).slug);if(!a)notFound();return <main id="conteudo"><header className="page-hero shell article-header"><div className="breadcrumb"><Link href="/">Início</Link> / <Link href="/blog">Blog</Link> / {a.category}</div><span className="eyebrow">{a.category}</span><h1>{a.title}</h1><p>{a.description}</p><div className="article-meta"><span>{a.minutes} minutos de leitura</span>{a.status==='draft'&&<span>Rascunho. Revisão editorial pendente.</span>}</div></header><article className="prose shell"><nav aria-label="Neste artigo" className="article-toc"><strong>Neste artigo</strong><ul>{a.sections.map((s,i)=><li key={s.heading}><a href={`#secao-${i}`}>{s.heading}</a></li>)}</ul></nav>{a.sections.map((s,i)=><section key={s.heading} id={`secao-${i}`}><h2>{s.heading}</h2>{s.paragraphs.map(p=><p key={p}>{p}</p>)}{s.bullets&&<ul>{s.bullets.map(b=><li key={b}>{b}</li>)}</ul>}</section>)}<section className="sources"><h2>Fontes e leitura complementar</h2><ul>{a.sources.map(s=><li key={s.url}><a href={s.url}>{s.label}</a></li>)}</ul></section><Link className="text-link" href="/blog">← Voltar ao blog</Link></article></main>}

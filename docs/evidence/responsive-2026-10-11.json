@@ -1,0 +1,44 @@
+[
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "title": "Software que faz seu negócio avançar.",
+    "imagesLoaded": true,
+    "logoWidth": 175
+  },
+  {
+    "width": 360,
+    "scrollWidth": 360,
+    "title": "Software que faz seu negócio avançar.",
+    "imagesLoaded": true,
+    "logoWidth": 194.390625
+  },
+  {
+    "width": 768,
+    "scrollWidth": 753,
+    "title": "Software que faz\nseu negócio\navançar.",
+    "imagesLoaded": true,
+    "logoWidth": 214
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1425,
+    "title": "Software que faz\nseu negócio\navançar.",
+    "imagesLoaded": true,
+    "logoWidth": 238
+  },
+  {
+    "width": 1920,
+    "scrollWidth": 1905,
+    "title": "Software que faz\nseu negócio\navançar.",
+    "imagesLoaded": true,
+    "logoWidth": 238
+  },
+  {
+    "width": 3840,
+    "scrollWidth": 3825,
+    "title": "Software que faz\nseu negócio\navançar.",
+    "imagesLoaded": true,
+    "logoWidth": 238
+  }
+]

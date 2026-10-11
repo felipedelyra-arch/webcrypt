@@ -1,0 +1,49 @@
+
+> webcrypt@0.1.0 check
+> npm run typecheck && npm run lint && npm test && npm run build
+
+
+> webcrypt@0.1.0 typecheck
+> tsc --noEmit
+
+
+> webcrypt@0.1.0 lint
+> eslint .
+
+
+> webcrypt@0.1.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: tests/contact-config.test.mjs
+ok 1 - tests/contact-config.test.mjs
+  ---
+  duration_ms: 311.70807
+  type: 'test'
+  ...
+# Subtest: tests/contact.test.mjs
+ok 2 - tests/contact.test.mjs
+  ---
+  duration_ms: 1150.339363
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1187.165467
+
+> webcrypt@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 114ms
+- Experiments (use with caution):
+  · cpus: 2
+  ⨯ useTypeScriptCli
+
+  Creating an optimized production build ...

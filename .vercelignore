@@ -1,0 +1,15 @@
+.aws/
+.codex/
+.agents/
+.git/
+.next/
+node_modules/
+.env*
+.data/
+*.sqlite*
+*.tsbuildinfo
+docs/
+tests/
+scripts/
+AGENTS.md
+CLAUDE.md

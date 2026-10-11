@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: contato exige diretório privado externo e configuração segura de produção
+ok 1 - contato exige diretório privado externo e configuração segura de produção
+  ---
+  duration_ms: 16.355922
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 75.24513

@@ -1,0 +1,21 @@
+✓ Running next.config.ts took 212ms
+{"url":"/","method":"GET","status":200,"noindex":true,"csp":true,"bytes":39917}
+{"url":"/solucoes","method":"GET","status":200,"noindex":true,"csp":true,"bytes":30482}
+{"url":"/sobre","method":"GET","status":200,"noindex":true,"csp":true,"bytes":18109}
+{"url":"/seguranca","method":"GET","status":200,"noindex":true,"csp":true,"bytes":21063}
+{"url":"/blog","method":"GET","status":200,"noindex":true,"csp":true,"bytes":15062}
+{"url":"/projetos","method":"GET","status":200,"noindex":true,"csp":true,"bytes":17327}
+{"url":"/contato","method":"GET","status":200,"noindex":true,"csp":true,"bytes":17967}
+{"url":"/privacidade","method":"GET","status":200,"noindex":true,"csp":true,"bytes":19275}
+{"url":"/blog/pwa-ou-aplicativo-nativo","method":"GET","status":404,"noindex":true,"csp":true,"bytes":12258}
+{"url":"/blog/seguranca-desde-a-arquitetura","method":"GET","status":404,"noindex":true,"csp":true,"bytes":12268}
+{"url":"/blog/da-necessidade-a-entrega-de-uma-plataforma","method":"GET","status":404,"noindex":true,"csp":true,"bytes":12294}
+{"url":"/projetos/mercadog","method":"GET","status":404,"noindex":true,"csp":true,"bytes":12297}
+{"url":"/projetos/tio-panda","method":"GET","status":404,"noindex":true,"csp":true,"bytes":12299}
+{"url":"/pagina-inexistente","method":"GET","status":404,"noindex":true,"csp":true,"bytes":15423}
+(node:3) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"url":"/api/contato","method":"POST","status":503,"noindex":true,"csp":true,"bytes":62}
+{"url":"/api/contato","method":"GET","status":405,"noindex":true,"csp":true,"bytes":0}
+{"url":"/robots.txt","method":"GET","status":200,"noindex":true,"csp":true,"bytes":27}
+{"url":"/sitemap.xml","method":"GET","status":200,"noindex":true,"csp":true,"bytes":110}

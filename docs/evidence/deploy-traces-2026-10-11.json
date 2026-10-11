@@ -1,0 +1,34 @@
+[
+  {
+    "route": "page",
+    "included": [
+      "public/brand/webcrypt-logo-original.jpg",
+      "public/brand/webcrypt-symbol-original.jpg",
+      "public/fonts/sora-regular.ttf"
+    ]
+  },
+  {
+    "route": "contato/page",
+    "included": [
+      "public/brand/webcrypt-logo-original.jpg",
+      "public/brand/webcrypt-symbol-original.jpg",
+      "public/fonts/sora-regular.ttf"
+    ]
+  },
+  {
+    "route": "projetos/page",
+    "included": [
+      "public/brand/webcrypt-logo-original.jpg",
+      "public/brand/webcrypt-symbol-original.jpg",
+      "public/fonts/sora-regular.ttf"
+    ]
+  },
+  {
+    "route": "sobre/page",
+    "included": [
+      "public/brand/webcrypt-logo-original.jpg",
+      "public/brand/webcrypt-symbol-original.jpg",
+      "public/fonts/sora-regular.ttf"
+    ]
+  }
+]

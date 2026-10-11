@@ -1,0 +1,85 @@
+
+> webcrypt@0.1.0 check
+> npm run typecheck && npm run lint && npm test && npm run build
+
+
+> webcrypt@0.1.0 typecheck
+> tsc --noEmit
+
+
+> webcrypt@0.1.0 lint
+> eslint .
+
+
+> webcrypt@0.1.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: tests/contact-config.test.mjs
+ok 1 - tests/contact-config.test.mjs
+  ---
+  duration_ms: 366.834446
+  type: 'test'
+  ...
+# Subtest: tests/contact.test.mjs
+ok 2 - tests/contact.test.mjs
+  ---
+  duration_ms: 926.363028
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 954.288044
+
+> webcrypt@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 111ms
+- Experiments (use with caution):
+  · cpus: 2
+  ⨯ useTypeScriptCli
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 6.7s
+  Running TypeScript ...
+  Finished TypeScript in 10.5s ...
+  Collecting page data using 2 workers ...
+  Generating static pages using 2 workers (0/15) ...
+  Generating static pages using 2 workers (3/15) 
+  Generating static pages using 2 workers (7/15) 
+  Generating static pages using 2 workers (11/15) 
+✓ Generating static pages using 2 workers (15/15) in 2.5s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/contato
+├ ƒ /blog
+├ ƒ /blog/[slug]
+├ ƒ /contato
+├ ○ /icon.svg
+├ ○ /opengraph-image
+├ ƒ /privacidade
+├ ƒ /projetos
+├ ƒ /projetos/[slug]
+├ ○ /robots.txt
+├ ƒ /seguranca
+├ ○ /sitemap.xml
+├ ƒ /sobre
+└ ƒ /solucoes
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,78 @@
+(node:3) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# Subtest: contato não configurado nunca simula recebimento
+ok 1 - contato não configurado nunca simula recebimento
+  ---
+  duration_ms: 337.939622
+  type: 'test'
+  ...
+# Subtest: confirma somente após persistir e reenvio não duplica
+ok 2 - confirma somente após persistir e reenvio não duplica
+  ---
+  duration_ms: 127.570049
+  type: 'test'
+  ...
+# Subtest: validação rejeita campos inesperados, serviços inválidos e spam
+ok 3 - validação rejeita campos inesperados, serviços inválidos e spam
+  ---
+  duration_ms: 153.879807
+  type: 'test'
+  ...
+# Subtest: origem indevida, formato e payload excessivo são recusados
+ok 4 - origem indevida, formato e payload excessivo são recusados
+  ---
+  duration_ms: 6.017978
+  type: 'test'
+  ...
+# Subtest: limite persistente retorna 429 inclusive após nova conexão
+ok 5 - limite persistente retorna 429 inclusive após nova conexão
+  ---
+  duration_ms: 261.539876
+  type: 'test'
+  ...
+# Subtest: SQL e HTML são armazenados como texto e conteúdo cifrado adulterado é recusado
+ok 6 - SQL e HTML são armazenados como texto e conteúdo cifrado adulterado é recusado
+  ---
+  duration_ms: 76.010283
+  type: 'test'
+  ...
+# Subtest: falha de notificação preserva solicitação e retry envia somente o identificador
+ok 7 - falha de notificação preserva solicitação e retry envia somente o identificador
+  ---
+  duration_ms: 66.21412
+  type: 'test'
+  ...
+# Subtest: falha de armazenamento não confirma envio; exclusão remove acesso ao conteúdo
+ok 8 - falha de armazenamento não confirma envio; exclusão remove acesso ao conteúdo
+  ---
+  duration_ms: 66.733764
+  type: 'test'
+  ...
+# Subtest: erro HTTP do provedor libera a resposta e mantém a notificação pendente
+ok 9 - erro HTTP do provedor libera a resposta e mantém a notificação pendente
+  ---
+  duration_ms: 117.589147
+  type: 'test'
+  ...
+# Subtest: recibo de envio já persistido pode ser recuperado após atingir limite
+ok 10 - recibo de envio já persistido pode ser recuperado após atingir limite
+  ---
+  duration_ms: 344.347895
+  type: 'test'
+  ...
+# Subtest: contato expirado não é lido nem notificado antes da limpeza agendada
+ok 11 - contato expirado não é lido nem notificado antes da limpeza agendada
+  ---
+  duration_ms: 83.818085
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1842.209965

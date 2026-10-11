@@ -1,0 +1,43 @@
+[
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "imagesLoaded": true,
+    "brandWidth": 175,
+    "menuRight": 300
+  },
+  {
+    "width": 360,
+    "scrollWidth": 360,
+    "imagesLoaded": true,
+    "brandWidth": 194.390625,
+    "menuRight": 340
+  },
+  {
+    "width": 768,
+    "scrollWidth": 753,
+    "imagesLoaded": true,
+    "brandWidth": 214,
+    "menuRight": 729
+  },
+  {
+    "width": 1920,
+    "scrollWidth": 1905,
+    "imagesLoaded": true,
+    "brandWidth": 238,
+    "menuRight": 0
+  },
+  {
+    "width": 3840,
+    "scrollWidth": 3825,
+    "imagesLoaded": true,
+    "brandWidth": 238,
+    "menuRight": 0
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1425,
+    "imagesLoaded": true,
+    "brandWidth": 238
+  }
+]
