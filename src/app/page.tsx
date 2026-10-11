@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Arrow } from '@/components/brand';
-import { Circuit } from '@/components/circuit';
+import { CipherField } from '@/components/cipher-field';
+import { DecryptText } from '@/components/decrypt-text';
 import { Intro } from '@/components/intro';
 import { Services } from '@/components/services';
 import { Process } from '@/components/process';
@@ -19,33 +20,39 @@ export default function Home() {
     <Intro />
     <main id="conteudo" className="home">
       <div className="hero-story">
-      <section className="hero shell" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <span className="hero-kicker">Software sob medida e cibersegurança</span>
-          <h1 id="hero-title" tabIndex={-1}><span className="hero-line"><span>Software que faz </span></span><span className="hero-line"><span>seu negócio </span></span><span className="hero-line"><span>avançar.</span></span></h1>
-          <p className="hero-promise">Segurança desde a arquitetura.</p>
-          <p className="hero-description">Aplicativos, plataformas e sistemas que conectam a sua operação, as pessoas e a próxima ideia.</p>
-          <div className="hero-actions">
-            <Link href="/contato" className="button">Conversar sobre meu projeto <Arrow diagonal /></Link>
-            <a href="#solucoes" className="text-link">Conhecer nossas soluções <span aria-hidden="true">↓</span></a>
+      <section className="hero" aria-labelledby="hero-title">
+        <CipherField />
+        <div className="hero-inner shell">
+          <div className="hero-copy">
+            <span className="hero-kicker"><span className="green-dot" />Software sob medida e cibersegurança</span>
+            <h1 id="hero-title" tabIndex={-1}><span className="sr-only">Software que faz seu negócio avançar.</span><span className="hero-line"><DecryptText text="Software que faz " /></span><span className="hero-line"><DecryptText text="seu negócio " delay={180} /></span><span className="hero-line"><DecryptText text="avançar." delay={360} /></span></h1>
+            <p className="hero-promise">Segurança desde a arquitetura.</p>
+            <p className="hero-description">Aplicativos, plataformas e sistemas que conectam a sua operação, as pessoas e a próxima ideia.</p>
+            <div className="hero-actions">
+              <Link href="/contato" className="button">Conversar sobre meu projeto <Arrow diagonal /></Link>
+              <a href="#solucoes" className="text-link">Conhecer nossas soluções <span aria-hidden="true">↓</span></a>
+            </div>
           </div>
+          <div className="story-captions" aria-hidden="true">
+            <p className="story-caption story-layers"><span>Camadas que se conectam.</span> Experiência, sistemas e dados desenhados juntos.</p>
+            <p className="story-caption story-symbol"><span>Proteção desde o primeiro traço.</span> Segurança faz parte da arquitetura, não do acabamento.</p>
+          </div>
+          <div className="story-progress" aria-hidden="true"><i /><span>Dados</span><span>Camadas</span><span>Proteção</span></div>
         </div>
-        <Circuit />
-        <div className="hero-bottom">
+        <div className="hero-bottom shell">
           <span>Aplicativos, plataformas e integrações.</span>
           <Link href="/seguranca">Como protegemos sua aplicação</Link>
           <a href="#solucoes" aria-label="Ir para soluções">↓</a>
         </div>
       </section>
-
       </div>
 
       <div className="capabilities">
-        <div className="shell">
-          <span>Aplicativos & PWAs</span><span aria-hidden="true">+</span>
-          <span>Sistemas sob medida</span><span aria-hidden="true">+</span>
-          <span>Integrações</span><span aria-hidden="true">+</span>
-          <span>Cibersegurança</span>
+        <div className="cap-marquee">
+          <div className="cap-track">
+            <ul className="cap-group" aria-label="Capacidades"><li>Aplicativos &amp; PWAs</li><li>Sistemas sob medida</li><li>Integrações</li><li>Cibersegurança</li><li>Plataformas web</li><li>Arquitetura segura</li></ul>
+            <ul className="cap-group" aria-hidden="true"><li>Aplicativos &amp; PWAs</li><li>Sistemas sob medida</li><li>Integrações</li><li>Cibersegurança</li><li>Plataformas web</li><li>Arquitetura segura</li></ul>
+          </div>
         </div>
       </div>
 

@@ -4,10 +4,12 @@ const sora = localFont({ src: [{ path: '../../public/fonts/sora-regular.ttf', we
 import { headers } from 'next/headers';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { PointerGlow } from '@/components/pointer-glow';
 import { isPublished, siteUrl } from '@/lib/site';
 import './globals.css';
 import './home.css';
 import '../components/interaction.css';
+import '../components/effects.css';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: 'WebCrypt: Software e segurança desde a arquitetura', template: '%s | WebCrypt' },
@@ -18,5 +20,5 @@ export const metadata: Metadata = {
 };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const nonce = (await headers()).get('x-nonce') || undefined;
-  return <html lang="pt-BR"><body className={sora.variable}><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><Header/>{children}<Footer/><script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'WebCrypt',description:'Desenvolvimento de software sob medida e cibersegurança.',...(isPublished?{url:siteUrl}:{})}).replace(/</g,'\\u003c')}}/></body></html>;
+  return <html lang="pt-BR"><body className={sora.variable}><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><PointerGlow/><Header/>{children}<Footer/><script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'WebCrypt',description:'Desenvolvimento de software sob medida e cibersegurança.',...(isPublished?{url:siteUrl}:{})}).replace(/</g,'\\u003c')}}/></body></html>;
 }

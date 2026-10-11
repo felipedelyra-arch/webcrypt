@@ -14,7 +14,7 @@ export function ProjectShowcase() {
       <p>Conheça o contexto de cada trabalho conforme seus materiais forem revisados para apresentação.</p>
     </div>
     {visible.length ? <ProjectRail>
-      {visible.map(project => <article className="project-showcase-panel" key={project.slug}>
+      {visible.map(project => <article className="project-showcase-panel" data-spotlight key={project.slug}>
         <div className="project-showcase-cover" aria-hidden="true">
           <span className="project-showcase-cover-name">{project.name}</span>
           <span className="project-showcase-cover-note">{project.status === 'draft' ? 'Apresentação em preparação' : 'Estudo de caso'}</span>

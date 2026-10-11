@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Brand, Arrow } from './brand';
 
 export function ContactCTA() {
-  return <section className="contact-cta shell" aria-labelledby="contact-title">
+  return <section className="contact-cta shell" data-spotlight aria-labelledby="contact-title"><span className="cta-beam" aria-hidden="true" />
     <div>
       <span className="eyebrow">O próximo passo</span>
       <h2 id="contact-title">Vamos dar forma<br />ao seu próximo projeto.</h2>
