@@ -48,3 +48,20 @@ ATT&CK descreve cenários, não certificação. O proxy deve sobrescrever `X-Rea
 - Hospedagem, chaves reais, receptor, scheduler, backup, restauração, logs, permissões do operador, controle de rede e revisão jurídica ainda não validados. Não habilitar coleta pública enquanto essas dependências permanecerem ausentes.
 
 Em 11/10/2026, a busca dirigida foi repetida sem correspondências para padrões de chaves privadas, AWS e GitHub em src/public/scripts/tests/docs e `.env.example`; também não encontrou referências a `CONTACT_KEY_V1`, `CONTACT_RATE_KEY`, `CONTACT_NOTIFY_TOKEN` ou `node:sqlite` em `.next/static`. Isso não é auditoria completa de segredos. Nova tentativa de `npm audit --omit=dev --json` falhou novamente com `ENOTFOUND registry.npmjs.org`; vulnerabilidades das dependências continuam sem verificação pelo registry.
+
+## Auditoria completa — 11/10/2026
+
+Revisão integral do código (não só diff) por revisor dedicado, com checklist de entrada, SQL, criptografia, acesso, abuso, origem, cabeçalhos, segredos, dependências e logs. Sem achado de severidade alta.
+
+- **Confirmado:** nenhuma rota pública lê contatos (só `POST /api/contato`); todas as consultas SQL parametrizadas; AES-256-GCM com IV aleatório de 12 bytes por registro, tag verificada e AAD `id:keyId`; HMAC-SHA256 com chave separada para limite e idempotência; banco `0600` em diretório `0700` fora do projeto; CSP com nonce, `strict-dynamic`, `frame-ancestors 'none'`; nenhum segredo no Git, no histórico ou no bundle cliente.
+- **`npm audit --omit=dev`: 0 vulnerabilidades.** `npm audit` completo: 5 altas apenas em dependências de lint (cadeia `braces` em `eslint-config-next`), sem efeito no site publicado; aguardando correção upstream (o `--force` quebraria o lint). Substitui o registro anterior de falha por DNS.
+- **Corrigidos nesta revisão (com testes):**
+  - CLI do operador usa `adminConfig()` e continua funcionando com `CONTACT_ENABLED=false` (exclusão a pedido do titular e limpeza de 90 dias durante incidentes).
+  - Limite por IP agrupa IPv6 por /64; o disjuntor global é verificado antes de qualquer gravação, então endereços rotativos não enchem a tabela.
+  - Honeypot recusa sem nomear o campo.
+  - Caracteres bidi, de largura zero e separadores de linha recusados; tabulação e quebra de linha só na mensagem.
+  - Chave de cifra igual à chave de limite é recusada.
+  - Corrida de idempotência devolve o recibo existente em vez de 503.
+  - Servidor de desenvolvimento escuta só em `127.0.0.1`; `engines` exige Node ≥ 22.18 (a CLI importa `.ts` nativamente).
+  - `.env.local` com permissão `600`.
+- **Riscos residuais:** o controle de quem lê os contatos é o acesso ao servidor e às chaves (contas do sistema, gestão de segredos, backups cifrados), não um login no site; não é criptografia ponta a ponta. Confiança em `x-real-ip` depende de o proxy substituir o cabeçalho. HSTS/TLS do domínio final ainda não verificados. Detalhes de acesso em `operacao.md`.

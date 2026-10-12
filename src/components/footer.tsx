@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { Brand, Arrow } from './brand';
+import { Brand } from './brand';
 
 export function ContactCTA() {
-  return <section className="contact-cta shell" data-spotlight aria-labelledby="contact-title"><span className="cta-beam" aria-hidden="true" />
+  return <section className="contact-cta shell" data-reveal="scale" data-spotlight aria-labelledby="contact-title"><span className="cta-beam" aria-hidden="true" />
     <div>
       <span className="eyebrow">O próximo passo</span>
       <h2 id="contact-title">Vamos dar forma<br />ao seu próximo projeto.</h2>
       <p>Conte o desafio. Vamos pensar na solução juntos.</p>
     </div>
-    <Link href="/contato" className="button">Conversar sobre meu projeto <Arrow diagonal /></Link>
+    <Link href="/contato" className="button">Conversar sobre meu projeto</Link>
   </section>;
 }
 
@@ -26,7 +26,7 @@ export function Footer() {
     <div className="shell footer-bottom">
       <span>© {new Date().getFullYear()} WebCrypt. Soluções Tecnológicas.</span>
       <Link href="/privacidade">Privacidade</Link>
-      <a href="#conteudo">Voltar ao conteúdo ↑</a>
+      <a href="#conteudo">Voltar ao conteúdo</a>
     </div>
   </footer>;
 }

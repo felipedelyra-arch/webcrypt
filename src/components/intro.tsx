@@ -97,7 +97,7 @@ export function Intro() {
   }, []);
 
   return <div ref={ref} className="intro" id="webcrypt-intro" hidden>
-    <button className="intro-skip" type="button" onClick={() => close.current()}>Pular abertura <span aria-hidden="true">↗</span></button>
+    <button className="intro-skip" type="button" onClick={() => close.current()}>Pular abertura</button>
     <span className="sr-only">WebCrypt, Soluções Tecnológicas</span>
     <div className="intro-word-block" aria-hidden="true">
       <span ref={text} className="intro-word">{'{0/1<>}'}</span>

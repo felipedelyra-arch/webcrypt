@@ -5,6 +5,7 @@ export type Article = {
   category: 'Produto' | 'Segurança' | 'Processo';
   minutes: number;
   status: 'draft' | 'published';
+  cover: { src: string; alt: string; width: number; height: number; phone?: boolean };
   sections: { heading: string; paragraphs: string[]; bullets?: string[] }[];
   sources: { label: string; url: string }[];
 };
@@ -12,6 +13,7 @@ export type Article = {
 export const articles: Article[] = [
   {
     slug: 'pwa-ou-aplicativo-nativo',
+    cover: { src: '/projects/pandavip/home.webp', alt: 'Tela inicial do aplicativo PandaVip em um celular', width: 1170, height: 2532, phone: true },
     title: 'PWA ou aplicativo nativo: como decidir pelo produto',
     description: 'Um roteiro para escolher a experiência móvel a partir das tarefas, dos dispositivos e das restrições reais do projeto.',
     category: 'Produto',
@@ -57,6 +59,7 @@ export const articles: Article[] = [
   },
   {
     slug: 'seguranca-desde-a-arquitetura',
+    cover: { src: '/media/security-tests.webp', alt: 'Resultado dos testes automatizados do formulário de contato da WebCrypt', width: 2400, height: 1500 },
     title: 'Segurança desde a arquitetura, não só no fim do projeto',
     description: 'Como transformar dados, identidade e limites de acesso em decisões verificáveis antes de publicar uma plataforma.',
     category: 'Segurança',
@@ -100,6 +103,7 @@ export const articles: Article[] = [
   },
   {
     slug: 'da-necessidade-a-entrega-de-uma-plataforma',
+    cover: { src: '/projects/tio-panda/cardapio.webp', alt: 'Cardápio online do site Tio Panda', width: 2400, height: 1500 },
     title: 'Da necessidade à entrega de uma plataforma',
     description: 'Um percurso prático para definir o problema, reduzir incertezas e entregar uma primeira versão que possa ser avaliada.',
     category: 'Processo',

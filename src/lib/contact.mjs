@@ -47,6 +47,16 @@ async function readPayload(request) {
   } finally { clearTimeout(timeout); void reader.cancel().catch(() => {}); }
 }
 
+// IPv6 clients control a whole /64, so they are rate limited as one prefix.
+export function rateIdentity(ip) {
+  if (!ip || ip.length > 64) return null;
+  if (!ip.includes(':')) return ip;
+  const [head, tail = ''] = ip.toLowerCase().split('%')[0].split('::');
+  const left = head ? head.split(':') : [], right = tail ? tail.split(':') : [];
+  const groups = ip.includes('::') ? [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill('0'), ...right] : left;
+  return groups.slice(0, 4).map(g => g.replace(/^0+(?=.)/, '')).join(':') + '::/64';
+}
+
 function validate(data) {
   const fields = {};
   const limits = { name: [2,100], contact: [5,180], company: [0,120], service: [1,30], message: [20,5000], website: [0,0] };
@@ -56,7 +66,8 @@ function validate(data) {
     const value = data[key] ?? (key === 'company' || key === 'website' ? '' : null);
     if (typeof value !== 'string') { fields[key] = 'Informe um texto válido.'; continue; }
     values[key] = value.trim();
-    if (value.length > max || values[key].length < min || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/u.test(value)) fields[key] = `Use entre ${min} e ${max} caracteres.`;
+    const hidden = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2066-\u2069\ufeff]/u.test(value) || (key !== 'message' && /[\t\n\r]/.test(value));
+    if (value.length > max || values[key].length < min || hidden) fields[key] = `Use entre ${min} e ${max} caracteres.`;
   }
   const contact = values.contact || '';
   if (!fields.contact && !/^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(contact) && !(/^\+?[\d\s().-]+$/.test(contact) && (contact.match(/\d/g)?.length || 0) >= 5)) fields.contact = 'Informe um e-mail ou telefone válido.';
@@ -78,7 +89,7 @@ export async function handleContact(request, config) {
   try {
     db = database(config);
     const now = Date.now();
-    const identity = config.trustProxy ? request.headers.get('x-real-ip') : 'local';
+    const identity = rateIdentity(config.trustProxy ? request.headers.get('x-real-ip') : 'local');
     if (!identity || identity.length > 64) return unavailable();
     const { fields, values } = validate(data);
     if (values) delete values.website;
@@ -90,21 +101,25 @@ export async function handleContact(request, config) {
     db.exec('BEGIN IMMEDIATE');
     db.prepare('DELETE FROM contacts WHERE created_at < ?').run(now - 90 * DAY);
     db.prepare('DELETE FROM rate_limits WHERE expires < ?').run(now);
-    let limited = false;
-    for (const [bucket, max] of [[hash(config, identity), 10], ['global', 100]]) {
-      const row = db.prepare('SELECT count FROM rate_limits WHERE bucket = ?').get(bucket);
-      if (row && row.count >= max) { limited = true; break; }
-      db.prepare('INSERT INTO rate_limits(bucket,count,expires) VALUES (?,1,?) ON CONFLICT(bucket) DO UPDATE SET count=count+1').run(bucket, now + 3600000);
-    }
+    // The global bucket is a circuit breaker, checked first so a flood of fresh addresses writes nothing.
+    const buckets = [['global', 100], [hash(config, identity), 10]];
+    const limited = buckets.some(([bucket, max]) => (db.prepare('SELECT count FROM rate_limits WHERE bucket = ?').get(bucket)?.count ?? 0) >= max);
+    if (!limited) for (const [bucket] of buckets) db.prepare('INSERT INTO rate_limits(bucket,count,expires) VALUES (?,1,?) ON CONFLICT(bucket) DO UPDATE SET count=count+1').run(bucket, now + 3600000);
     db.exec('COMMIT');
     if (limited) return reply(429, { error: 'Aguarde antes de tentar novamente.' }, { 'Retry-After': '3600' });
+    if (fields.website) return reply(422, { error: 'Revise os campos indicados.' });
     if (Object.keys(fields).length) return reply(422, { error: 'Revise os campos indicados.', fields });
     const id = randomUUID();
     const nonce = randomBytes(12);
     const cipher = createCipheriv('aes-256-gcm', config.key, nonce);
     cipher.setAAD(Buffer.from(`${id}:${config.keyId}`));
     const ciphertext = Buffer.concat([cipher.update(payload, 'utf8'), cipher.final()]);
-    db.prepare('INSERT INTO contacts(id,request_key,payload_hash,key_id,nonce,ciphertext,tag,created_at) VALUES (?,?,?,?,?,?,?,?)').run(id, storedKey, payloadHash, config.keyId, nonce, ciphertext, cipher.getAuthTag(), now);
+    try { db.prepare('INSERT INTO contacts(id,request_key,payload_hash,key_id,nonce,ciphertext,tag,created_at) VALUES (?,?,?,?,?,?,?,?)').run(id, storedKey, payloadHash, config.keyId, nonce, ciphertext, cipher.getAuthTag(), now); }
+    catch (error) {
+      const race = /UNIQUE/.test(String(error?.message)) && db.prepare('SELECT id,payload_hash FROM contacts WHERE request_key = ?').get(storedKey);
+      if (!race) throw error;
+      return race.payload_hash === payloadHash ? reply(200, { id: race.id, received: true }) : reply(409, { error: 'O conteúdo mudou. Inicie um novo envio.' });
+    }
     return reply(201, { id, received: true });
   } catch { return unavailable(); }
   finally { if (db) { try { db.exec('ROLLBACK'); } catch {} db.close(); } }

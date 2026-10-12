@@ -72,3 +72,7 @@ Antes de `SITE_PUBLISHED=true`: confirmar domínio, titularidade, dados da contr
 Em11/10/2026, publicação explicitamente autorizada pelo responsável e executada na Vercel: https://webcrypt.vercel.app, projeto `webcrypt` em `felipedelyra-8717s-projects`. Deploy final READY `dpl_C4Mgh5r4j1ZmhjcNhPZXLGtLdNte`, ambiente production da plataforma com SITE_PUBLISHED=false e CONTACT_ENABLED=false no build/runtime. A primeira publicação foi marcada production pela plataforma apesar do destino preview solicitado. Contato permanece indisponível; integração e ativação não foram autorizadas por esse pedido visual. Checks online e limites em `docs/continuidade.md` e `docs/evidence/deploy-live-2026-10-11.json`.
 
 Se o destino escolhido for Vercel, recomendo atualizar a CLI instalada antes de usá-la: `npm i -g vercel@latest` (o ambiente sinalizou 60.1.3 → 63.1.2). A atualização não foi executada. O contato atual exige outro armazenamento durável para funcionar nessa plataforma.
+
+## Incidente: desligar o recebimento sem perder o acesso do operador (11/10/2026)
+
+`CONTACT_ENABLED=false` fecha apenas a rota pública. O `scripts/contact-admin.mjs` usa `adminConfig()` (banco privado + chaves) e continua executando `get`, `delete`, `prune` e `notify`, para exclusões a pedido do titular e para a limpeza diária de 90 dias. Quem pode ler: somente contas do sistema com acesso ao usuário da aplicação e às variáveis `CONTACT_KEY_*` — mantenha essa lista restrita ao responsável e ao sócio.

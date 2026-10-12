@@ -260,7 +260,7 @@ export function CipherField({ shape }: { shape?: 0 | 1 | 2 }) {
     <div className="art-footer">
       {shape === undefined && <button type="button" className="intro-replay" aria-controls="webcrypt-intro" onClick={() => window.dispatchEvent(new Event('webcrypt:replay-intro'))}>Ver abertura</button>}
       <button type="button" className="motion-toggle" onClick={() => setPaused(!paused)} aria-pressed={paused}>
-        <span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span> {paused ? 'Retomar' : 'Pausar'} efeitos
+        <span className="motion-dot" aria-hidden="true" />{paused ? 'Retomar' : 'Pausar'} animações
       </button>
     </div>
   </>;

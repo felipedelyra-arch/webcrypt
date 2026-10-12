@@ -46,8 +46,8 @@ export function ProjectRail({ children }: { children: ReactNode }) {
 
   return <div className="project-rail">
     <div className="project-rail-controls" hidden={!controls.ready}>
-      <button type="button" aria-label="Mostrar projeto anterior" aria-controls="project-showcase-rail" disabled={!controls.previous} onClick={() => move(-1)}>←</button>
-      <button type="button" aria-label="Mostrar próximo projeto" aria-controls="project-showcase-rail" disabled={!controls.next} onClick={() => move(1)}>→</button>
+      <button type="button" aria-label="Mostrar projeto anterior" aria-controls="project-showcase-rail" disabled={!controls.previous} onClick={() => move(-1)}>Anterior</button>
+      <button type="button" aria-label="Mostrar próximo projeto" aria-controls="project-showcase-rail" disabled={!controls.next} onClick={() => move(1)}>Próximo</button>
     </div>
     <div id="project-showcase-rail" className="project-showcase-list" role="region" aria-label="Projetos em destaque" tabIndex={0} ref={railRef} onScroll={updateControls} onFocusCapture={revealFocusedPanel} onKeyDown={event => {
       if (event.target !== event.currentTarget || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;

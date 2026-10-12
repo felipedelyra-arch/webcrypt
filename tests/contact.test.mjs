@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
-import { handleContact, readContact, flushNotifications, maintainContacts } from '../src/lib/contact.mjs';
+import { handleContact, readContact, flushNotifications, maintainContacts, rateIdentity } from '../src/lib/contact.mjs';
 
 test('contato não configurado nunca simula recebimento', async () => {
   const response = await handleContact(new Request('http://localhost/api/contato', { method: 'POST' }), null);
@@ -135,4 +135,23 @@ test('contato expirado não é lido nem notificado antes da limpeza agendada', a
   assert.equal(notifications, 0);
   assert.deepEqual(result, { sent: 0, pending: 0 });
   assert.equal(maintainContacts(config).deleted, 1);
+});
+
+test('honeypot falha sem revelar o campo e caracteres invisíveis são recusados', async t => {
+  const config = fixture(t);
+  const trap = await handleContact(request({ ...valid, website: 'bot' }), config);
+  assert.equal(trap.status, 422);
+  assert.equal((await trap.json()).fields, undefined);
+  for (const name of ['Pessoa \u202Eoãn', 'Pes\u200Bsoa', 'Pessoa\nNova']) assert.equal((await handleContact(request({ ...valid, name }), config)).status, 422);
+  assert.equal((await handleContact(request({ ...valid, message: 'Primeira linha do projeto.\nSegunda linha com detalhes.' }), config)).status, 201);
+});
+
+test('IPv6 é limitado por prefixo /64', async t => {
+  assert.equal(rateIdentity('2001:db8:1:2:aaaa::1'), rateIdentity('2001:0db8:0001:0002:ffff:0:0:9'));
+  assert.notEqual(rateIdentity('2001:db8:1:2::1'), rateIdentity('2001:db8:1:3::1'));
+  assert.equal(rateIdentity('203.0.113.7'), '203.0.113.7');
+  const config = { ...fixture(t), trustProxy: true };
+  const from = i => new Request('http://localhost/api/contato', { method: 'POST', headers: { 'content-type': 'application/json', origin: 'http://localhost', 'idempotency-key': randomUUID(), 'x-real-ip': `2001:db8:5:6:${i.toString(16)}::1` }, body: JSON.stringify({ ...valid, message: `Projeto sintético número ${i} para teste.` }) });
+  for (let i = 1; i <= 10; i++) assert.equal((await handleContact(from(i), config)).status, 201);
+  assert.equal((await handleContact(from(11), config)).status, 429);
 });

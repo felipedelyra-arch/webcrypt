@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomBytes } from 'node:crypto';
-import { contactConfig } from '../src/lib/contact-config.ts';
+import { contactConfig, adminConfig } from '../src/lib/contact-config.ts';
 
 test('contato exige diretório privado externo e configuração segura de produção', t => {
   const external = mkdtempSync(join(tmpdir(), 'webcrypt-private-'));
@@ -42,4 +42,17 @@ test('contato exige diretório privado externo e configuração segura de produ�
   assert.equal(Boolean(contactConfig()), true);
   process.env.VERCEL = '1';
   assert.equal(contactConfig(), null, 'Vercel não pode ativar armazenamento em disco local');
+});
+
+test('chaves iguais são recusadas e o operador acessa com o recebimento desligado', t => {
+  const external = mkdtempSync(join(tmpdir(), 'webcrypt-admin-'));
+  const key = randomBytes(32).toString('base64');
+  const settings = { CONTACT_ENABLED: 'false', CONTACT_DB_PATH: join(external, 'contacts.db'), CONTACT_KEY_ID: 'v1', CONTACT_KEY_V1: key, CONTACT_RATE_KEY: randomBytes(32).toString('base64'), VERCEL: '' };
+  const previous = Object.fromEntries(Object.keys(settings).map(k => [k, process.env[k]]));
+  Object.assign(process.env, settings);
+  t.after(() => { for (const [k, v] of Object.entries(previous)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } rmSync(external, { recursive: true, force: true }); });
+  assert.equal(contactConfig(), null);
+  assert.ok(adminConfig());
+  process.env.CONTACT_RATE_KEY = key;
+  assert.equal(adminConfig(), null);
 });

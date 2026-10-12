@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { Arrow } from '@/components/brand';
 import { CipherField } from '@/components/cipher-field';
 import { DecryptText } from '@/components/decrypt-text';
 import { Intro } from '@/components/intro';
@@ -29,8 +28,8 @@ export default function Home() {
             <p className="hero-promise">Segurança desde a arquitetura.</p>
             <p className="hero-description">Aplicativos, plataformas e sistemas que conectam a sua operação, as pessoas e a próxima ideia.</p>
             <div className="hero-actions">
-              <Link href="/contato" className="button">Conversar sobre meu projeto <Arrow diagonal /></Link>
-              <a href="#solucoes" className="text-link">Conhecer nossas soluções <span aria-hidden="true">↓</span></a>
+              <Link href="/contato" className="button">Conversar sobre meu projeto</Link>
+              <a href="#solucoes" className="text-link">Conhecer nossas soluções</a>
             </div>
           </div>
           <div className="story-captions" aria-hidden="true">
@@ -42,7 +41,7 @@ export default function Home() {
         <div className="hero-bottom shell">
           <span>Aplicativos, plataformas e integrações.</span>
           <Link href="/seguranca">Como protegemos sua aplicação</Link>
-          <a href="#solucoes" aria-label="Ir para soluções">↓</a>
+          <a href="#solucoes" aria-label="Ir para soluções">Soluções</a>
         </div>
       </section>
       </div>
@@ -57,40 +56,40 @@ export default function Home() {
       </div>
 
       <section id="solucoes" className="section shell" aria-labelledby="solutions-title">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal="up">
           <div><span className="eyebrow">O que construímos</span><h2 id="solutions-title">Cada negócio pede<br />um jeito de construir.</h2></div>
           <p>Escolha um ponto de partida. A solução nasce do que a sua operação precisa.</p>
         </div>
-        <Services />
+        <div data-reveal="up"><Services /></div>
       </section>
 
       <section className="security-section" aria-labelledby="security-title">
-        <div className="shell security-grid">
-          <div>
+        <div className="shell security-grid" data-stagger>
+          <div data-reveal="up">
             <span className="eyebrow">Desenvolvimento e segurança</span>
             <h2 id="security-title">Construir bem.<br />Proteger desde o início.</h2>
             <p>Uma interface simples pode esconder um sistema complexo. Experiência, arquitetura e proteção de dados precisam caminhar juntas.</p>
-            <Link href="/seguranca" className="text-link">Entenda nossa abordagem <Arrow diagonal /></Link>
+            <Link href="/seguranca" className="text-link">Entenda nossa abordagem</Link>
           </div>
-          <SecurityFlow />
+          <div data-reveal="up"><SecurityFlow /></div>
         </div>
 
       </section>
 
       <section className="section shell" aria-labelledby="process-title">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal="up">
           <div><span className="eyebrow">Como trabalhamos</span><h2 id="process-title">Um caminho claro<br />entre a ideia e a entrega.</h2></div>
           <p>Decisões compartilhadas, etapas compreensíveis e espaço para evoluir.</p>
         </div>
-        <Process />
+        <div data-reveal="up"><Process /></div>
       </section>
 
       <ProjectShowcase />
 
       <section className="section shell" aria-labelledby="articles-title">
-        <div className="section-heading">
+        <div className="section-heading" data-reveal="up">
           <div><span className="eyebrow">Ideias em circulação</span><h2 id="articles-title">Tecnologia explicada.<br />Decisões mais claras.</h2></div>
-          <Link href="/blog" className="text-link">Explorar o blog <Arrow diagonal /></Link>
+          <Link href="/blog" className="text-link">Explorar o blog</Link>
         </div>
         <ArticleList items={articles.filter(article => article.status === 'published' || showDrafts).slice(0, 3)} />
       </section>

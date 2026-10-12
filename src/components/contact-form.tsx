@@ -113,7 +113,7 @@ export function ContactForm({ available, initialService = 'a-definir' }: { avail
   const disabled = !available || status === 'sending' || status === 'success';
   const field = (name: Field) => ({ id: name, name, disabled, 'aria-invalid': !!errors[name], 'aria-describedby': errors[name] ? `${name}-error` : undefined });
 
-  return <form ref={formRef} className="contact-form" onSubmit={submit} noValidate>
+  return <form ref={formRef} className="contact-form" data-reveal="up" onSubmit={submit} noValidate>
     {!available && <p className="unavailable" role="status">O contato por formulário ainda não está disponível. Nenhuma informação será enviada.</p>}
     <div className="form-row">
       <div className="field"><label htmlFor="name">Nome</label><input {...field('name')} autoComplete="name" required maxLength={100} value={values.name} onChange={event => change('name', event.target.value)}/>{errors.name && <span id="name-error" className="field-error">{errors.name}</span>}</div>

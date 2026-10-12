@@ -5,13 +5,14 @@
 .project-rail { position: relative; padding-top: 66px; }
 .project-rail-controls { position: absolute; top: 0; right: 0; display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 18px; }
 .project-rail-controls[hidden] { display: none; }
-.project-rail-controls button { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); font-size: 20px; }
+.project-rail-controls button { display: grid; place-items: center; min-width: 48px; height: 48px; padding-inline: 20px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface); color: var(--text); font-size: 13px; }
 .project-rail-controls button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .project-rail-controls button:disabled { opacity: .38; cursor: default; }
 .project-showcase-list { position: relative; display: flex; gap: 30px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-color: #71885d #151a16; scrollbar-width: thin; padding: 1px 1px 20px; }
 .project-showcase-list:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .project-showcase-panel { flex: 0 0 80%; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(270px, 1fr); min-height: 410px; border: 1px solid var(--line); background: #10150f; overflow: hidden; scroll-snap-align: start; }
 .project-showcase-cover { position: relative; min-width: 0; min-height: 410px; overflow: hidden; background: #0c100b; border-right: 1px solid var(--line); }
+.project-showcase-par { position: absolute; inset-inline: 0; top: -7.5%; height: 115%; }
 .project-showcase-cover-name { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(54px, 7vw, 116px); letter-spacing: -.075em; color: var(--text); }
 .project-showcase-img { object-fit: cover; object-position: 18% top; transition: transform .7s cubic-bezier(.22,1,.36,1); }
 .project-showcase-panel:hover .project-showcase-img, .project-showcase-panel:focus-within .project-showcase-img { transform: scale(1.03); }
@@ -27,9 +28,7 @@
 .project-showcase-copy > p { max-width: 41ch; margin-top: 22px; font-size: 14px; line-height: 1.8; }
 .project-showcase-copy .project-showcase-confirmation { margin-top: 15px; color: #d8e3cd; font-size: 12px; }
 .project-showcase-link { display: inline-flex; align-items: center; gap: 16px; min-height: 44px; margin-top: 34px; color: var(--text); font-size: 14px; transition: color .2s; }
-.project-showcase-link svg { transition: transform .3s; }
 .project-showcase-link:hover, .project-showcase-link:focus-visible { color: var(--accent); }
-.project-showcase-link:hover svg, .project-showcase-link:focus-visible svg { transform: translate(3px, -3px); }
 .project-showcase-empty { max-width: 760px; padding: 42px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .project-showcase-empty h3 { font-weight: 400; }
 .project-showcase-empty p { margin-top: 16px; font-size: 14px; }
@@ -59,7 +58,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .project-showcase-list { scroll-behavior: auto; }
-  .project-showcase-panel, .project-showcase-img, .project-showcase-link, .project-showcase-link svg { animation: none; transition: none; transform: none; }
-  .project-showcase-panel:hover .project-showcase-img, .project-showcase-panel:focus-within .project-showcase-img,
-  .project-showcase-link:hover svg, .project-showcase-link:focus-visible svg { transform: none; }
+  .project-showcase-panel, .project-showcase-img, .project-showcase-link { animation: none; transition: none; transform: none; }
+  .project-showcase-panel:hover .project-showcase-img, .project-showcase-panel:focus-within .project-showcase-img { transform: none; }
 }

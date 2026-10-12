@@ -45,3 +45,92 @@ html:not([data-motion]) .cta-beam { animation-duration: 4.8s; animation-iteratio
 main:has(> .page-hero) { overflow-x: clip; }
 html.lenis { scroll-behavior: auto; }
 .no-ring:focus, .no-ring:focus-visible { outline: none; }
+
+/* Scroll reveals (scroll-fx.tsx). Hidden only once JS confirmed motion is allowed. */
+.fx [data-reveal] { transition: opacity 1s var(--ease-out), transform 1.1s var(--ease-out), filter 1s var(--ease-out), clip-path 1.2s var(--ease-out); transition-delay: calc(var(--i, 0) * 90ms); }
+.fx [data-reveal="up"]:not(.is-in) { opacity: 0; transform: translateY(48px); filter: blur(8px); }
+.fx [data-reveal="clip"]:not(.is-in) { clip-path: inset(18% 0 18% 0 round 16px); transform: scale(.94); opacity: .2; }
+.fx [data-reveal="clip"].is-in { clip-path: inset(0 0 0 0 round 0); }
+.fx [data-reveal="scale"]:not(.is-in) { opacity: 0; transform: scale(.9) translateY(30px); }
+.fx [data-stagger] > [data-reveal] { transition-delay: calc(var(--i, 0) * 110ms); }
+[data-parallax] { transform: translate3d(0, var(--parallax, 0px), 0); will-change: transform; }
+html:not(.fx) [data-parallax] { transform: none; }
+.motion-toggle { display: inline-flex; align-items: center; gap: 10px; }
+.motion-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 #b5f52b66; animation: dot-live 2s ease-out infinite; }
+.motion-toggle[aria-pressed="true"] .motion-dot { background: var(--muted); animation: none; }
+@keyframes dot-live { 70% { box-shadow: 0 0 0 7px #b5f52b00; } 100% { box-shadow: 0 0 0 0 #b5f52b00; } }
+@media (prefers-reduced-motion: reduce) { .motion-dot { animation: none; } }
+
+/* Interaction feedback: button fill slides in, text links underline from the left. No glyph arrows. */
+.button { position: relative; overflow: hidden; isolation: isolate; }
+.button::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #d9ff7a; transform: translateX(-101%); transition: transform 400ms var(--ease-out, cubic-bezier(.22, 1, .36, 1)); }
+.button-outline::before { background: var(--surface); }
+.button:hover::before, .button:focus-visible::before { transform: none; }
+.button:hover { background: var(--accent); }
+.button-outline:hover { background: transparent; }
+.text-link, .project-showcase-link { background: linear-gradient(currentColor, currentColor) no-repeat 0 calc(50% + 12px) / 0 1px; transition: color .2s, background-size 400ms var(--ease-out, cubic-bezier(.22, 1, .36, 1)); }
+.text-link:hover, .text-link:focus-visible, .project-showcase-link:hover, .project-showcase-link:focus-visible { background-size: 100% 1px; }
+.article-card a:hover .text-link { background-size: 100% 1px; color: var(--accent); }
+.hero-bottom > a:last-child { width: auto; padding-inline: 18px; border-radius: 22px; font-size: 11px; }
+.process-steps button > span:last-child { margin-left: 0; }
+.security-flow .flow-nodes button > span { font-size: 11px; letter-spacing: .08em; }
+.project-showcase-par .project-showcase-img { object-position: 18% top; }
+
+/* Service visuals (real screenshots) */
+.service-shot { margin: 0 0 24px; display: grid; gap: 10px; justify-items: center; }
+.service-shot figcaption, .about-security figcaption { font-size: 11px; color: var(--muted); text-align: center; }
+.shot-browser, .shot-plain { width: 100%; max-width: 460px; border: 1px solid #38442d; border-radius: 10px; overflow: hidden; background: #0c100b; }
+.shot-bar { display: flex; gap: 6px; padding: 9px 12px; border-bottom: 1px solid #38442d; background: #10150f; }
+.shot-bar i { width: 8px; height: 8px; border-radius: 50%; background: #4a5a3a; }
+.shot-browser img, .shot-plain img, .shot-phone img { display: block; width: 100%; height: auto; }
+.shot-phones { display: flex; justify-content: center; gap: 14px; }
+.shot-phone { width: min(30%, 120px); overflow: hidden; border: 1px solid #50643c; border-radius: 14px; box-shadow: 0 14px 30px #0009; }
+.shot-phone:nth-child(2) { margin-top: 18px; }
+.service-detail-content { min-width: 0; }
+
+/* Article covers */
+.article-art { height: 220px; background: #182111; border: 1px solid #34452a; border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 25px; }
+.article-art > img { object-fit: cover; object-position: top; transition: transform .6s var(--ease-out, cubic-bezier(.22, 1, .36, 1)); }
+.article-art.is-phone { background: radial-gradient(ellipse at 50% 60%, #b5f52b24, transparent 65%), #0c100b; }
+.article-phone { position: absolute; top: 12%; bottom: -8%; left: 50%; translate: -50% 0; aspect-ratio: 1170 / 2532; overflow: hidden; border: 1px solid #50643c; border-radius: 16px; box-shadow: 0 14px 30px #000a; }
+.article-phone img { object-fit: cover; }
+.article-card a:hover .article-art > img { transform: scale(1.04); }
+.article-cover { margin-top: 10px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #0c100b; }
+.article-cover img { display: block; width: 100%; height: auto; }
+.article-cover.is-phone { display: grid; place-items: center; padding-top: 40px; max-height: 560px; background: radial-gradient(ellipse at 50% 60%, #b5f52b24, transparent 65%), #0c100b; }
+.article-cover.is-phone img { width: min(260px, 60%); border: 1px solid #50643c; border-radius: 22px 22px 0 0; border-bottom: 0; }
+
+/* Sobre */
+.about-lead { max-width: 640px; margin-top: 24px; color: var(--muted); font-size: 16px; line-height: 1.8; }
+.about-work .about-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 48px; }
+.about-project { display: grid; align-content: start; gap: 6px; min-width: 0; }
+.about-project h3 { margin-top: 14px; font-size: 22px; font-weight: 400; letter-spacing: -.03em; }
+.about-project > span { color: var(--muted); font-size: 13px; }
+.about-project-media { position: relative; overflow: hidden; aspect-ratio: 8 / 5; border: 1px solid var(--line); border-radius: var(--radius); background: radial-gradient(ellipse at 50% 60%, #b5f52b1f, transparent 65%), #0c100b; }
+.about-par { position: absolute; inset-inline: 0; top: -7.5%; height: 115%; }
+.about-par img, .about-phone img { object-fit: cover; object-position: top; transition: transform .7s var(--ease-out, cubic-bezier(.22, 1, .36, 1)); }
+.about-phone { position: absolute; top: 7%; bottom: 7%; left: 50%; translate: -50% 0; aspect-ratio: 1170 / 2532; overflow: hidden; border: 1px solid #50643c; border-radius: 14px; box-shadow: 0 14px 30px #000a; }
+.about-project:hover img { transform: scale(1.04); }
+.about-security { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.about-security figure { margin: 0; min-width: 0; display: grid; gap: 10px; }
+.about-security figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.about-checks { margin: 28px 0 24px; padding: 0; list-style: none; display: grid; gap: 14px; }
+.about-checks li { padding-left: 18px; position: relative; color: var(--muted); line-height: 1.7; }
+.about-checks li::before { content: ""; position: absolute; left: 0; top: .8em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.prose > section + section { margin-top: 45px; }
+@media (max-width: 850px) {
+  .about-work .about-projects { grid-template-columns: 1fr; }
+  .about-security { grid-template-columns: 1fr; gap: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button::before { transition: none; }
+  .text-link, .project-showcase-link { transition: none; }
+  .article-art > img, .about-par img, .about-phone img { transition: none; }
+  .article-card a:hover .article-art > img, .about-project:hover img { transform: none; }
+}
+/* Menu toggle: two CSS lines that cross when open (no glyphs). */
+.menu-bars { position: relative; width: 16px; height: 10px; }
+.menu-bars::before, .menu-bars::after { content: ''; position: absolute; left: 0; right: 0; height: 1.5px; background: currentColor; transition: transform 300ms var(--ease-out), top 300ms var(--ease-out); }
+.menu-bars::before { top: 1px; } .menu-bars::after { top: 7.5px; }
+[aria-expanded="true"] .menu-bars::before { top: 4.25px; transform: rotate(45deg); }
+[aria-expanded="true"] .menu-bars::after { top: 4.25px; transform: rotate(-45deg); }

@@ -26,7 +26,7 @@ export function ProjectGallery({ screenshots, url }: { screenshots: Project['scr
   }
   const phone = (s: Project['screenshots'][number], priority: boolean) => <div className="pg-phone"><Image src={s.src} alt={s.alt} width={s.width} height={s.height} sizes="(max-width: 700px) 80vw, 360px" priority={priority} /></div>;
 
-  return <div className="pg">
+  return <div className="pg" data-reveal="clip">
     {hasDesktop && hasMobile && <div className="device-switch" role="group" aria-label="Formato das telas">{(['desktop', 'mobile'] as const).map(d => <button key={d} type="button" aria-pressed={device === d} onClick={() => { setDevice(d); setIndex(0); }}>{d === 'desktop' ? 'Computador' : 'Celular'}</button>)}</div>}
     {appOnly ? <div className="pg-strip" tabIndex={0} role="region" aria-label="Telas do aplicativo">
       {images.map((s, i) => <figure key={s.src}>{phone(s, i === 0)}<figcaption aria-hidden="true">{s.alt}</figcaption></figure>)}

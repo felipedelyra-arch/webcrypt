@@ -1,7 +1,7 @@
-import { contactConfig } from '../src/lib/contact-config.ts';
+import { adminConfig } from '../src/lib/contact-config.ts';
 import { flushNotifications, maintainContacts, readContact } from '../src/lib/contact.mjs';
 
-const config = contactConfig();
+const config = adminConfig();
 if (!config) throw new Error('Configure um banco privado e as chaves antes de operar o contato.');
 const [command, id] = process.argv.slice(2);
 if (command === 'list' || command === 'prune') console.log(JSON.stringify(maintainContacts(config), null, 2));

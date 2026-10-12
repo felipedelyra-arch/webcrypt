@@ -34,7 +34,7 @@
 .intro-replay { padding: 8px 0; min-height: 44px; font-size: 11px; background: none; border: 0; color: var(--muted); }
 .intro-replay:hover { color: var(--text); }
 .motion-toggle { font-size: 11px; background: #0d120bcc; backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 30px; padding: 10px 14px; min-height: 44px; white-space: nowrap; }
-.motion-toggle > span { color: var(--accent); padding-right: 5px; }
+.motion-toggle > span:not(.motion-dot) { color: var(--accent); padding-right: 5px; }
 .motion-toggle:hover { border-color: var(--accent); }
 
 /* Scroll chapter only when motion is allowed: copy hands over to captions as the particles morph. */
